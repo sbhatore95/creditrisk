@@ -1,7 +1,6 @@
 from django import forms
 from .models import Feature
 from .models import Configuration
-from .models import ModelSchema, FieldSchema
 from .models import UploadFile, Criteria, CriteriaHelper
 import csv
 import io

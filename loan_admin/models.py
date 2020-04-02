@@ -1,12 +1,6 @@
 from django.db import models
-from dynamic_models.models import AbstractModelSchema, AbstractFieldSchema
 from django import forms
 # Create your models here.
-class FieldSchema(AbstractFieldSchema):
-    pass
-
-class ModelSchema(AbstractModelSchema):
-    pass
 
 class UploadFile(models.Model):
 	file = models.FileField(upload_to='credit_risk/dataset')

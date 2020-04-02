@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from django.db import connection
 from django.db import models
 import sys
-from .models import ModelSchema, FieldSchema, FileUpload
+from .models import FileUpload
 from bootstrap4.widgets import RadioSelectButtonGroup
 
 # class CSVForm(forms.Form):
