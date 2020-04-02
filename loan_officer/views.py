@@ -58,7 +58,7 @@ def result(request):
 		del sp[0]
 		res = load_and_predict("statandml", sp)
 	elif(rule):
-		f = open('test_id_rule_dataset.csv', 'r')
+		f = open('media/credit_risk/dataset/test_id_dataset.csv', 'r')
 		line = f.readline()
 		array = line.split(',')
 		array[-1] = array[-1].replace('\n', '')
