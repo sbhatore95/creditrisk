@@ -16,6 +16,7 @@ matplotlib==3.2.1
 numpy==1.18.2
 pandas==1.0.3
 psycopg2-binary==2.8.4
+psycopg2==2.7.5
 pyparsing==2.4.6
 python-dateutil==2.8.1
 pytz==2019.3
