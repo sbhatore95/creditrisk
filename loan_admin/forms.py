@@ -6,6 +6,7 @@ import csv
 import io
 from bootstrap4.widgets import RadioSelectButtonGroup
 from crispy_forms.helper import FormHelper
+from loan_officer.models import SavedState
 
 class FeatureForm(forms.ModelForm):
 	class Meta:
@@ -69,6 +70,8 @@ class UploadFileForm(forms.ModelForm):
 			count = count + 1
 			# print(line)
 		fw.close()
+		SavedState.objects.all().first().delete()
+
 
 class CriteriaForm(forms.ModelForm):
 	CATEGORY_CHOICES = [
