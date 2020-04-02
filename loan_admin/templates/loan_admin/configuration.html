@@ -1,0 +1,30 @@
+{% load crispy_forms_tags %}
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<div class="container">
+	<div class="row justify-content-center">
+    	<div class="col-8">
+			<img src="/media/credit_risk/logo.jpg">
+			<a href="{% url 'login:index' %}"> Home </a>&nbsp&nbsp&nbsp
+			<a href="{% url 'loan_admin:index' %}"> Add Feature </a>&nbsp &nbsp &nbsp
+			<a href="{% url 'loan_admin:criteria' %}"> Criteria </a>&nbsp&nbsp&nbsp
+			<a href="{% url 'loan_admin:uploadCSV' %}"> Upload Dataset </a>
+			<h1> Configuration </h1>
+			{% if messages %}
+			<ul class="messages">
+			    {% for message in messages %}
+			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			    {% endfor %}
+			</ul>
+			{% endif %}
+			<form action="{% url 'loan_admin:weigh' %}" method="POST" role="form">
+				{% csrf_token %}
+				{{ form|crispy }}
+			    <input type="submit" value="Submit" class="btn btn-success">
+			</form>
+		</div>
+	</div>
+</div>

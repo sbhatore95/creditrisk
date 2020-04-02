@@ -1,0 +1,65 @@
+{% load crispy_forms_tags %}
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('.new').on('click', function() {
+                let $this = $(document.getElementById('new_entry'))
+                let $th = $(document.getElementById('new_score'))
+                let name = $this.attr('name')
+			    let name1 = $th.attr('name')
+                let n = parseInt(name.split('_')[1]) + 1
+			    let n1 = parseInt(name1.split('_')[1]) + 1
+                name = 'entry_' + n
+			    name1 = 'score_' + n1
+                $("<br><label>Criteria "+n+"</label>"+
+                "<input name='"+name+"' id='new_entry' class='textinput textInput form-control'>" 
+                + "<br>" +
+                 "<label>Score "+n1+"</label>"+
+                "<input name='"+name1+"' id='new_score' class='textinput textInput form-control'>" 
+                + "<br>").insertAfter("#new_score")
+                $this.off('input', arguments.callee)
+			    $this.removeAttr('id')
+			    $th.removeAttr('id')
+			});
+		});
+	</script>
+</head>
+<div class="container">
+	<div class="row justify-content-center">
+    	<div class="col-8">
+			<img src="/media/credit_risk/logo.jpg">
+			<a href="{% url 'login:index' %}"> Home </a>&nbsp&nbsp&nbsp
+			<a href="{% url 'loan_admin:index' %}"> Add Feature </a>&nbsp &nbsp &nbsp
+			<a href="{% url 'loan_admin:configuration' %}"> Configuration </a>&nbsp &nbsp &nbsp
+			<a href="{% url 'loan_admin:uploadCSV' %}"> Upload Dataset </a>
+			<h1> Criteria </h1>
+			{% if messages %}
+			<ul class="messages">
+			    {% for message in messages %}
+			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			    {% endfor %}
+			</ul>
+			{% endif %}
+			<form action="{% url 'loan_admin:cri' %}" method="POST" role="form" class=".interest-list-new">
+				{% csrf_token %}
+				{{ form|crispy }}
+				<!-- {{ form.feature }}
+				{{ form.category }}
+				{{ form.product }}
+				{{ form.data_source }}
+				{{ form.api }}
+				{{ form.key }}
+				{% for field in form.get_entries %}
+			    	{{ field }}
+				{% endfor %} -->
+				
+			    <input type="submit" value="Submit" class="btn btn-success">
+			</form>
+			<button class="new">Add Row</button>
+		</div>
+	</div>
+</div>

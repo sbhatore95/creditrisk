@@ -1,0 +1,25 @@
+{% load crispy_forms_tags %}
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<div class="container">
+	<div class="row justify-content-center">
+    	<div class="col-8">
+			<img src="/media/credit_risk/logo.jpg">
+			<a href="{% url 'login:index' %}"> Home </a>&nbsp&nbsp&nbsp
+			<a href="{% url 'loan_officer:index' %}"> Scorecard </a>&nbsp &nbsp &nbsp
+			<a href="{% url 'loan_officer:uploadCSV' %}"> Upload Dataset </a>
+			<h1> Results </h1>
+			<table>
+				{% if stat %}
+					<tr><td><b>Score: </b>{{ ans }}</td></tr>
+				{% else %}
+				<tr><td><b>Approve</b>&nbsp &nbsp</td><td>{{ approve }}</td></tr>
+				<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ not_approve }}</td></tr>
+				{% endif %}
+			</table>
+		</div>
+	</div>
+</div>
