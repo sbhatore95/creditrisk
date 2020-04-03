@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'loan_officer',
     'login',
     'bootstrap4',
-    'background_task',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

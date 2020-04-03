@@ -518,15 +518,6 @@ def load_and_predict(model, arr):
         reloaded = cPickle.load(f)
         f.close()
     m = np.array(arr)
-    curr_column = [reloaded.Column_Names[0]]
-    nominal_arr = []
-    nominal_curr = []
-    for i in range(1, len(reloaded.Column_Names)):
-        curr_column.append(reloaded.Column_Names[i])
-        column_arr.append(list(curr_column))
-        if reloaded.Column_Names[i] in nominal:
-            nominal_curr.append(reloaded.Column_Names[i])
-        nominal_arr.append(list(nominal_curr))
     return reloaded.Prepare_Data(m)
     # print("-?" + reloaded.Best_Model)
     # return "1,2"

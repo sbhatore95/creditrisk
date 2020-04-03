@@ -9,6 +9,7 @@ from crispy_forms.helper import FormHelper
 from loan_officer.models import SavedState
 from loan_officer.project import *
 from .tasks import *
+import threading
 
 class FeatureForm(forms.ModelForm):
 	class Meta:
@@ -48,9 +49,6 @@ class UploadFileForm(forms.ModelForm):
 			m.columns = dict['columns']
 			m.nominal_features = dict['nominal_features']
 			m.save()
-		cols = UploadFile.objects.all().first().columns.split(',')
-		del cols[0]
-		noml = UploadFile.objects.all().first().nominal_features.split(',')
 		fw = open('dataset.csv', 'w')
 		# with open('train_id_dataset.csv', 'wb+') as destination:
 		# 	for chunk in f.chunks():
@@ -64,7 +62,6 @@ class UploadFileForm(forms.ModelForm):
 			line = line.decode('ASCII')
 			flag = 0
 			lout = ""
-			print(line)
 			for i in range(0, len(line)):
 				if(flag == 1):
 					lout = lout + line[i]
@@ -78,9 +75,15 @@ class UploadFileForm(forms.ModelForm):
 		if(SavedState.objects.all().first() == None):
 			pass
 		else:
-			SavedState.objects.all().first().delete()
+			m = SavedState.objects.all().first()
+			m.stat = "false"
+			m.ml = "true"
+			m.save()
 		print("calling bg task")
-		bg_task(cols, noml, "dataset.csv")
+		# start()
+		t = threading.Thread(target=bg_task)
+		t.setDaemon(True)
+		t.start()
 		print("return")
 
 class CriteriaForm(forms.ModelForm):
