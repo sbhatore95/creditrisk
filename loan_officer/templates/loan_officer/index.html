@@ -11,6 +11,12 @@
 			<a href="{% url 'login:index' %}"> Home </a>&nbsp&nbsp&nbsp
 			<a href="{% url 'loan_officer:uploadCSV' %}"> Upload Dataset </a>
 			<h1> Scorecard </h1>
+			<div>
+				<ul>
+					<li>Rule - ready</li>
+					<li>Stat and ML - {% if status_bg %}ready{% else %}not ready{% endif %} </li>
+				</ul>
+			</div>
 			<form action="{% url 'loan_officer:result' %}" method="GET" role="form">
 				{{ form|crispy }}
 			    <input type="submit" value="Submit" class="btn btn-success">

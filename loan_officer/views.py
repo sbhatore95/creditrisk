@@ -15,7 +15,8 @@ from loan_admin.models import UploadFile, Criteria, CriteriaHelper, Configuratio
 
 def index(request):
 	form = MyForm()
-	context = {'form':form}
+	status_bg = SavedState.objects.all().first().stat == "true"
+	context = {'form':form, 'status_bg':status_bg}
 	return render(request, 'loan_officer/index.html', context)
 	# x = predict_score(columns, 'loan_status', nominal, "dataset.csv")
 	# print(x.Preprocess())
@@ -151,11 +152,11 @@ def result(request):
 		del sp[0]
 		res = load_and_predict("ml", sp)
 	if(rule):
-		context = {'stat':True,'ans':ans}
+		context = {'status':True,'ans':ans}
 		return render(request, 'loan_officer/result.html', context)
 	else:
 		out = res.split(',')
-		context = {'stat':False, 'approve': out[0], 'not_approve': out[1]}
+		context = {'status':False, 'approve': out[0], 'not_approve': out[1]}
 		return render(request, 'loan_officer/result.html', context)
 
 def uploadCSV(request):

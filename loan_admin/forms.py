@@ -7,6 +7,8 @@ import io
 from bootstrap4.widgets import RadioSelectButtonGroup
 from crispy_forms.helper import FormHelper
 from loan_officer.models import SavedState
+from loan_officer.project import *
+from .tasks import *
 
 class FeatureForm(forms.ModelForm):
 	class Meta:
@@ -46,6 +48,9 @@ class UploadFileForm(forms.ModelForm):
 			m.columns = dict['columns']
 			m.nominal_features = dict['nominal_features']
 			m.save()
+		cols = UploadFile.objects.all().first().columns.split(',')
+		del cols[0]
+		noml = UploadFile.objects.all().first().nominal_features.split(',')
 		fw = open('dataset.csv', 'w')
 		# with open('train_id_dataset.csv', 'wb+') as destination:
 		# 	for chunk in f.chunks():
@@ -70,8 +75,13 @@ class UploadFileForm(forms.ModelForm):
 			count = count + 1
 			# print(line)
 		fw.close()
-		SavedState.objects.all().first().delete()
-
+		if(SavedState.objects.all().first() == None):
+			pass
+		else:
+			SavedState.objects.all().first().delete()
+		print("calling bg task")
+		bg_task(cols, noml, "dataset.csv")
+		print("return")
 
 class CriteriaForm(forms.ModelForm):
 	CATEGORY_CHOICES = [
