@@ -7,10 +7,92 @@
 <div class="container">
 	<div class="row justify-content-center">
     	<div class="col-8">
-			<img src="/media/credit_risk/logo.jpg">
-			<h1> Login </h1>
-			<a href="{% url 'loan_officer:index' %}"> Loan Officer </a><br>
-			<a href="{% url 'loan_admin:index' %}"> Loan Administrator </a>
+			<img src="/media/credit_risk/logo.jpg"> &nbsp &nbsp &nbsp
+			<a href="{% url 'login:index' %}"> Home </a> &nbsp &nbsp &nbsp
+			<a href="{% url 'login:login' %}"> Login </a><br>
+			<h1> Credit Risk Evaluation Application </h1>
+			<div>
+				<p>
+					This application helps a loan granting officer of a
+					bank or financial organisation to evaluate the loan applications.
+					This helps in making decisions with regard to the applied loans.<br>
+					<b>Background: </b>Risk for the applied loan can be evaluated using
+					three methods - Rule based, Statistical based and Machine Learning based.
+					Rule based models rely on well defined rules to judge a use case while
+					Statistical and Machine Learning models rely on the data of other
+					previously given loans. A decision can be suggested in this case by analysis
+					of this data.<br> 
+					<b>Usage of the application: </b>Points to note while using the application:
+					<ol>
+						<li>
+							<b>Users: </b>There are two users of the application: Loan Administrator and
+							Loan Officer. Loan Admin is responsible for setting rules for the rule
+							based model and adding dataset for statistical and ML based models.
+							Loan Officer can add the dataset for testing the loan applicants and
+							choose to see the results for a loan id using any of the three models
+							for evaluation.
+						</li>
+						<li>
+							<b>Setting rules: </b> For rule based model, add features using the "Add 
+							Feature" screen, configure the feature using "Configuration" screen
+							with a weightage between 0 and 1 such that weightages of all the features 
+							add to 1. Then, set criteria for a feature using "Criteria" screen.
+						</li>
+						<li>
+							<b>Setting criteria: </b> 
+							<ul>
+								<li>
+									Select the feature, product and category from the dropdown lists in the
+									"Criteria" screen. 
+								</li>
+								<li>
+									Select the data source. If it is XML/JSON, specify the source url in
+									API and provide the key. If it is SQL,	write the SQL query from the
+									database named "db". e.g. "SELECT loan_amnt from db". You need not
+									provide key for SQL.
+								</li>
+								<li>
+									Set criterias and their scores. If the feature is categorical, set
+									criteria using "is feature_name". e.g. For a feature say "gender",
+									set the score for criteria "is Male" and "is Female" differently.  
+								</li>
+							</ul>
+						</li>
+						<li>
+							<b>Uploading datasets: </b>
+							<ul>
+								<li>
+									For uploading dataset of customers who have applied for loan, just 
+									uplaod a ".csv" file in the "Upload Dataset" screen of Loan Officer.
+								</li>
+								<li>
+									For uploading dataset for training, upload a ".csv" file in "Upload 
+									Dataset" screen of Loan Admin.
+								</li>
+							</ul>
+						</li>
+						<li>
+							<b>Seeing Results: </b>
+							<ul>
+								<li>
+									You can see the results by entering a loan id and 
+									checking any of the models in the "Scorecard" screen of the Loan 
+									Officer if	the screen shows that the model is ready for analysis.
+								</li>
+								<li>
+									The rule based model gives the score (between 1-10) according to the
+									specified rules.
+								</li>
+								<li>
+									The statistical and machine learning based models give probability of
+									approval of the loan according to the best machine learning/statistical
+									model implemented.
+								</li>
+							</ul>
+						</li>
+					</ol>  
+				</p>
+			</div>
 		</div>
 	</div>
 </div>

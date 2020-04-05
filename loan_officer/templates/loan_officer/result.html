@@ -7,17 +7,22 @@
 <div class="container">
 	<div class="row justify-content-center">
     	<div class="col-8">
-			<img src="/media/credit_risk/logo.jpg">
+			<img src="/media/credit_risk/logo.jpg"> &nbsp &nbsp &nbsp
 			<a href="{% url 'login:index' %}"> Home </a>&nbsp&nbsp&nbsp
 			<a href="{% url 'loan_officer:index' %}"> Scorecard </a>&nbsp &nbsp &nbsp
 			<a href="{% url 'loan_officer:uploadCSV' %}"> Upload Dataset </a>
 			<h1> Results </h1>
 			<table>
-				{% if stat %}
-					<tr><td><b>Score: </b>{{ ans }}</td></tr>
-				{% else %}
-				<tr><td><b>Approve</b>&nbsp &nbsp</td><td>{{ approve }}</td></tr>
-				<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ not_approve }}</td></tr>
+				{% if rule %}
+					<tr><td><b>Score: </b>{{ rule }}</td></tr>
+				{% endif %}
+				{% if stat_approve %}
+				<tr><td><b>Approve</b>&nbsp &nbsp</td><td>{{ stat_approve }}</td></tr>
+				<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ stat_napprove }}</td></tr>
+				{% endif %}
+				{% if ml_approve %}
+				<tr><td><b>Approve</b>&nbsp &nbsp</td><td>{{ ml_approve }}</td></tr>
+				<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ ml_napprove }}</td></tr>
 				{% endif %}
 			</table>
 		</div>
