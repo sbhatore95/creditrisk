@@ -48,7 +48,6 @@ class Migration(migrations.Migration):
             name='UploadFile',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('target', models.CharField(max_length=100)),
                 ('columns', models.CharField(max_length=1000000)),
                 ('nominal_features', models.CharField(max_length=1000000)),
             ],
