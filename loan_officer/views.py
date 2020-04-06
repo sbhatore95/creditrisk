@@ -12,7 +12,10 @@ from .models import SavedState
 
 def index(request):
 	form = MyForm()
-	status_bg = SavedState.objects.all().first().stat == "true"
+	ins = SavedState.objects.all().first()
+	status_bg = False
+	if(ins is not None):
+		status_bg = ins.stat == "true"
 	context = {'form':form, 'status_bg':status_bg}
 	return render(request, 'loan_officer/index.html', context)
 	# x = predict_score(columns, 'loan_status', nominal, "dataset.csv")
