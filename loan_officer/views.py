@@ -26,6 +26,8 @@ def result(request):
 	if(SavedState.objects.all().first() == None):
 		m = SavedState(stat="false", ml="false")
 		m.save()
+	if((stat or ml) and SavedState.objects.all().first().stat == "false"):
+		return render(request, 'loan_officer/result.html', {'not_ready':True})
 	classifier = Classifier(rule, stat, ml)
 	ans = classifier.doClassification(loan_id)
 	stat_approve = None
@@ -54,7 +56,7 @@ def addApplicant(request):
 	url = reverse('loan_officer:uploadCSV')
 	if form.is_valid():
 		# form.process_data(request.POST, request.FILES['file'])
-		form.save()
+		form.process_data(request.FILES['file'])
 		base_url = reverse('loan_officer:uploadCSV')
 		query_string =  urlencode({'add': 'ok'})
 		url = '{}?{}'.format(base_url, query_string)

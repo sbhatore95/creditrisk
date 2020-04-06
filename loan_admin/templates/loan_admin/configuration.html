@@ -22,8 +22,16 @@
 			{% endif %}
 			<form action="{% url 'loan_admin:weigh' %}" method="POST" role="form">
 				{% csrf_token %}
-				{{ form|crispy }}
-			    <input type="submit" value="Submit" class="btn btn-success">
+				<b>{{ form.feature.label }}*</b>
+				{{ form.feature }}<br><br>
+				<b>{{ form.category.label }}*</b>
+				{{ form.category }}<br><br>
+				<b>{{ form.product.label }}*</b>
+				{{ form.product }}<br><br>
+				<b>{{ form.weightage.label }}*</b>
+				{{ form.weightage }}
+				<br>
+			    <input type="submit" value="Submit" class="btn btn-primary">
 			</form>
 		</div>
 	</div>

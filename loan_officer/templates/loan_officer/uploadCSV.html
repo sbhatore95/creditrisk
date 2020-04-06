@@ -3,6 +3,9 @@
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 <div class="container">
 	<div class="row justify-content-center">
@@ -10,12 +13,22 @@
 			<img src="/media/credit_risk/logo.jpg"> &nbsp &nbsp &nbsp
 			<a href="{% url 'login:index' %}"> Home </a>&nbsp&nbsp&nbsp
 			<a href="{% url 'loan_officer:index' %}"> Scorecard </a>&nbsp &nbsp &nbsp
+			<a href="{% url 'loan_officer:uploadCSV' %}"> Upload Dataset </a>
 			<h1> Customer Dataset Upload </h1>
 			<form action="{% url 'loan_officer:add' %}" method="POST" enctype= multipart/form-data>
 				{% csrf_token %}
-				{{ form.as_p }}
-			    <input type="submit" value="Submit" class="btn btn-success">
+				<div class="custom-file">
+					{{ form.file }}
+					<label class="custom-file-label" for="customFile">Choose file</label>
+				</div><br><br>
+			    <input type="submit" value="Submit" class="btn btn-primary">
 			</form>
 		</div>
 	</div>
 </div>
+<script>		
+	$(".custom-file-input").on("change", function() {
+	  var fileName = $(this).val().split("\\").pop();
+	  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+	});
+</script>

@@ -3,7 +3,6 @@ from django import forms
 # Create your models here.
 
 class UploadFile(models.Model):
-	file = models.FileField(upload_to='credit_risk/dataset')
 	columns = models.CharField(max_length=1000000)
 	nominal_features = models.CharField(max_length=1000000)
 # Create your models here.

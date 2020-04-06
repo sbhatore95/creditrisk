@@ -12,11 +12,53 @@ from .tasks import *
 import threading
 
 class FeatureForm(forms.ModelForm):
+	VALUE_CHOICES = [
+		('Bi', 'Binary'),
+		('No', 'Nominal'),
+		('In', 'Interval'),
+		('Ra', 'Ratio'),
+
+	]
+	DATA_CHOICES = [
+		('Nu', 'Numeric'),
+		('Ch', 'Character'),
+		('Da', 'Date'),
+	]
+	CATEGORY_CHOICES = [
+		('In', 'Individual'),
+		('Co', 'Company'),
+		('Cy', 'Country'),
+	]
+	name = forms.CharField(label="Feature*", required=True, 
+		widget=forms.TextInput(attrs={'class': 'form-control'}))
+	value = forms.ChoiceField(label="Value*", choices=VALUE_CHOICES, required=True,
+		widget=forms.Select(attrs={'class': 'custom-select'}))
+	data_type = forms.ChoiceField(label="Data Type*", choices=DATA_CHOICES, required=True,
+		widget=forms.Select(attrs={'class': 'custom-select'}))
+	category = forms.ChoiceField(label="Category*", choices=CATEGORY_CHOICES, required=True,
+		widget=forms.Select(attrs={'class': 'custom-select'}))
 	class Meta:
 		model = Feature
 		fields = ['name', 'value', 'data_type', 'category']
 
-class ConfigurationForm(forms.ModelForm):	
+class ConfigurationForm(forms.ModelForm):
+	CATEGORY_CHOICES = [
+		('In', 'Individual'),
+		('Co', 'Company'),
+		('Cy', 'Country'),
+	]
+	PRODUCT_CHOICES = [
+		('Ag', 'Agricultural'),
+		('Ho', 'Home'),
+		('Pe', 'Personal'),
+		('Ve', 'Vehicle'),
+	]
+	category = forms.ChoiceField(label="Category", choices=CATEGORY_CHOICES, required=True,
+		widget=forms.Select(attrs={'class': 'custom-select'}))
+	product = forms.ChoiceField(label="Product", choices=PRODUCT_CHOICES, required=True,
+		widget=forms.Select(attrs={'class': 'custom-select'}))
+	weightage = forms.FloatField(label="Weightage", 
+		widget=forms.TextInput(attrs={'class': 'form-control'}))
 	def __init__(self, *args, **kwargs):
 		super(ConfigurationForm, self).__init__(*args, **kwargs)
 		x = Feature.objects.values('name')
@@ -27,15 +69,21 @@ class ConfigurationForm(forms.ModelForm):
 			b = (a, i['name'])
 			FEATURE_CHOICES.append(b)
 			a = a + '1'
-		self.fields['feature'] = forms.ChoiceField(choices=FEATURE_CHOICES, required=True )
+		self.fields['feature'] = forms.ChoiceField(label="Feature", choices=FEATURE_CHOICES, 
+			required=True, widget=forms.Select(attrs={'class': 'custom-select'}))
 	class Meta:
 		model = Configuration
 		fields = '__all__'
 
 class UploadFileForm(forms.ModelForm):
-	file = forms.FileField()
+	file = forms.FileField(widget=forms.FileInput(attrs={'class': 'custom-file-input', 
+        'id': "customFile", 'name': 'filename'}))
 	columns = forms.CharField( widget=forms.Textarea )
 	nominal_features = forms.CharField( widget=forms.Textarea )
+	def __init__(self, *args, **kwargs):
+		super(UploadFileForm, self).__init__(*args, **kwargs)
+		self.fields['file'] = forms.FileField(widget=forms.FileInput(attrs={'class': 'custom-file-input', 
+        'id': "customFile", 'name': 'filename'}))
 	class Meta:
 		model = UploadFile
 		fields = '__all__'
@@ -103,18 +151,22 @@ class CriteriaForm(forms.ModelForm):
 		('js', 'JSON'),
 		('sq', 'SQL'),
 	]
-	category = forms.ChoiceField(label="Category",choices=CATEGORY_CHOICES)
-	product = forms.ChoiceField(label="Product",choices=PRODUCT_CHOICES)
+	category = forms.ChoiceField(label="Category",choices=CATEGORY_CHOICES, 
+		widget=forms.Select(attrs={'class': 'custom-select'}))
+	product = forms.ChoiceField(label="Product",choices=PRODUCT_CHOICES,
+		widget=forms.Select(attrs={'class': 'custom-select'}))
 	data_source = forms.ChoiceField(
         help_text="Select the data source",
         required=True,
         label="Order Type:",
-        widget=RadioSelectButtonGroup,
+        widget=forms.RadioSelect,
         choices=((1, 'XML'), (2, 'JSON'), (3, 'SQL')),
         initial=1,
     )
-	api = forms.CharField(required=True, label="API/SQL")
-	key = forms.CharField(required=False, label="Key")
+	api = forms.CharField(required=True, label="API/SQL",
+		widget=forms.TextInput(attrs={'class': 'form-control'}))
+	key = forms.CharField(required=False, label="Key",
+		widget=forms.TextInput(attrs={'class': 'form-control'}))
 	
 	def __init__(self, *args, **kwargs):
 		self.entry_count = 0
@@ -126,7 +178,8 @@ class CriteriaForm(forms.ModelForm):
 			b = (a, field['name'])
 			FEATURE_CHOICES.append(b)
 			a = a + '1'
-		self.fields['feature'] = forms.ChoiceField(choices=FEATURE_CHOICES, required=True )
+		self.fields['feature'] = forms.ChoiceField(choices=FEATURE_CHOICES, required=True, 
+			widget=forms.Select(attrs={'class': 'custom-select'}))
 		criterias = CriteriaHelper.objects.filter(
 			criteria=self.instance
 		)
@@ -137,8 +190,10 @@ class CriteriaForm(forms.ModelForm):
 			str1 = "Criteria " + str(i+1)
 			str2 = "Score " + str(i+1)
 			self.entry_count += 1
-			self.fields[field_name] = forms.CharField(label=str1,required=False)
-			self.fields[f] = forms.CharField(label=str2,required=False)
+			self.fields[field_name] = forms.CharField(label=str1,required=False,
+				widget=forms.TextInput(attrs={'class':'form-control'}))
+			self.fields[f] = forms.CharField(label=str2,required=False, 
+				widget=forms.TextInput(attrs={'class':'form-control'}))
 			try:
 				self.initial[field_name] = criterias[i].entry
 				self.initial[f] = criterias[i].score
@@ -151,9 +206,9 @@ class CriteriaForm(forms.ModelForm):
 		str2 = "Score " + str(i+1)
 		self.entry_count += 1
 		self.fields[field_name] = forms.CharField(label=str1,required=False, 
-			widget=forms.TextInput(attrs={'id':'new_entry'}))
+			widget=forms.TextInput(attrs={'id':'new_entry', 'class':'form-control'}))
 		self.fields[f] = forms.CharField(label=str2,required=False, 
-			widget=forms.TextInput(attrs={'id':'new_score'}))
+			widget=forms.TextInput(attrs={'id':'new_score', 'class':'form-control'}))
 		count = 1
 		if(args):
 			print(args[0])
@@ -168,9 +223,9 @@ class CriteriaForm(forms.ModelForm):
 				str2 = "Score " + str(i+1)
 				self.entry_count += 1
 				self.fields[field_name] = forms.CharField(label=str1,required=False, 
-					widget=forms.TextInput(attrs={'id':'new_entry'}))
+					widget=forms.TextInput(attrs={'id':'new_entry', 'class':'form-control'}))
 				self.fields[f] = forms.CharField(label=str2,required=False, 
-					widget=forms.TextInput(attrs={'id':'new_score'}))
+					widget=forms.TextInput(attrs={'id':'new_score', 'class':'form-control'}))
 
 	def clean(self):
 		entries = []
@@ -230,22 +285,6 @@ class CriteriaForm(forms.ModelForm):
 		for field_name in self.fields:
 			if field_name.startswith('score_'):
 				yield self[field_name]
-
-	# def get_both(self):
-	# 	ans = []
-	# 	A = []
-	# 	B = []
-	# 	for field_name in self.fields:
-	# 		if field_name.startswith('entry_'):
-	# 			A.append(self[field_name])
-	# 	for field_name in self.fields:
-	# 		if field_name.startswith('score_'):
-	# 			B.append(self[field_name])
-	# 	for i in range(0, len(A)):
-	# 		ans.append(A[i])
-	# 		if(i+1 < len(A)):
-	# 			ans.append(B[i+1])
-	# 	return ans
 
 	class Meta:
 		model = Criteria

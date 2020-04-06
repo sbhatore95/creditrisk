@@ -22,8 +22,15 @@
 			{% endif %}
 			<form action="{% url 'loan_admin:add' %}" method="POST" role="form">
 				{% csrf_token %}
-				{{ form|crispy }}
-			    <input type="submit" value="Submit" class="btn btn-success">
+				<b>{{ form.name.label }}</b>
+				{{ form.name }}<br>
+				<b>{{ form.value.label }}</b>
+				{{ form.value }}<br><br>
+				<b>{{ form.data_type.label }}</b>
+				{{ form.data_type }}<br><br>
+				<b>{{ form.category.label }}</b>
+				{{ form.category }}<br><br>
+			    <input type="submit" value="Submit" class="btn btn-primary">
 			</form>
 		</div>
 	</div>

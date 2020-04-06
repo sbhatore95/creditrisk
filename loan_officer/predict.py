@@ -12,7 +12,7 @@ class RuleBasedStrategyAbstract(object):
 
 class RuleBasedStrategy(RuleBasedStrategyAbstract):
 	def generate_score(self, loan_id):
-		f = open('media/credit_risk/dataset/test_id_dataset.csv', 'r')
+		f = open('test_id_dataset.csv', 'r')
 		line = f.readline()
 		array = line.split(',')
 		array[-1] = array[-1].replace('\n', '')
@@ -38,26 +38,27 @@ class RuleBasedStrategy(RuleBasedStrategyAbstract):
 				if(truth):
 					if(criteria.data_source == '3'): # for SQL
 						feature = criteria.api.split(' ')[-1]
-					feature_score = 0
-					for crhelper in helper:
-						# For categorical
-						tup = crhelper.entry.split(' ')
-						if(tup[0] == "is"):
-							if(tup[1] == sp[Dict[feature]]):
-								feature_score += crhelper.score
-						elif(tup[0] == ">"):
-							if(int(sp[Dict[feature]]) > int(tup[1])):
-								feature_score += crhelper.score
-						elif(tup[0] == "<"):
-							if(int(sp[Dict[feature]]) < int(tup[1])):
-								feature_score += crhelper.score
-						elif(tup[0] == ">="):
-							if(int(sp[Dict[feature]]) >= int(tup[1])):
-								feature_score += crhelper.score
-						elif(tup[0] == "<="):
-							if(int(sp[Dict[feature]]) <= int(tup[1])):
-								feature_score += crhelper.score
-					ans += configuration.weightage * feature_score
+					if(feature in array):
+						feature_score = 0
+						for crhelper in helper:
+							# For categorical
+							tup = crhelper.entry.split(' ')
+							if(tup[0] == "is"):
+								if(tup[1] == sp[Dict[feature]]):
+									feature_score += crhelper.score
+							elif(tup[0] == ">"):
+								if(int(sp[Dict[feature]]) > int(tup[1])):
+									feature_score += crhelper.score
+							elif(tup[0] == "<"):
+								if(int(sp[Dict[feature]]) < int(tup[1])):
+									feature_score += crhelper.score
+							elif(tup[0] == ">="):
+								if(int(sp[Dict[feature]]) >= int(tup[1])):
+									feature_score += crhelper.score
+							elif(tup[0] == "<="):
+								if(int(sp[Dict[feature]]) <= int(tup[1])):
+									feature_score += crhelper.score
+						ans += configuration.weightage * feature_score
 		f.close()
 		return str(ans)
 
@@ -65,7 +66,7 @@ class DataBasedStrategyAbstract(object):
 	__metaclass__ = abc.ABCMeta
 
 	def parse(self, loan_id):
-		f = open('media/credit_risk/dataset/test_id_dataset.csv', 'r')
+		f = open('test_id_dataset.csv', 'r')
 		line = f.readline()
 		sp = line.split(',')
 		count = 0

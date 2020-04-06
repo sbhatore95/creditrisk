@@ -3,12 +3,16 @@
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 <div class="container">
 	<div class="row justify-content-center">
     	<div class="col-8">
 			<img src="/media/credit_risk/logo.jpg"> &nbsp &nbsp &nbsp
 			<a href="{% url 'login:index' %}"> Home </a>&nbsp&nbsp&nbsp
+			<a href="{% url 'loan_officer:index' %}"> Scorecard </a>&nbsp&nbsp&nbsp
 			<a href="{% url 'loan_officer:uploadCSV' %}"> Upload Dataset </a>
 			<h1> Scorecard </h1>
 			<div>
@@ -18,8 +22,22 @@
 				</ul>
 			</div>
 			<form action="{% url 'loan_officer:result' %}" method="GET" role="form">
-				{{ form|crispy }}
-			    <input type="submit" value="Submit" class="btn btn-success">
+			    <div>
+			    	<label>Loan ID</label>
+			    	{{ form.loan_id }}
+			    </div>
+			    <div class="custom-control custom-checkbox mb-3">
+			    	{{ form.rule_based }}
+			    	<label class="custom-control-label" for="customCheck1">Rule Based</label>
+			    </div><div class="custom-control custom-checkbox mb-3">
+			    	{{ form.statistical_based }}
+			    	<label class="custom-control-label" for="customCheck2">Statistical Based</label>
+			    </div>
+			    <div class="custom-control custom-checkbox mb-3">
+			    	{{ form.ML_based }}
+			    	<label class="custom-control-label" for="customCheck3">ML Based</label>
+			    </div>
+			    <input type="submit" value="Submit" class="btn btn-primary">
 			</form>
 		</div>
 	</div>

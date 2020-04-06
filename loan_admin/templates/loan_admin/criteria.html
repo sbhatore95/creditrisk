@@ -15,15 +15,13 @@
 			    let n1 = parseInt(name1.split('_')[1]) + 1
                 name = 'entry_' + n
 			    name1 = 'score_' + n1
-                $("<br><label>Criteria "+n+"</label>"+
-                "<input name='"+name+"' id='new_entry' class='textinput textInput form-control'>" 
-                + "<br>" +
-                 "<label>Score "+n1+"</label>"+
-                "<input name='"+name1+"' id='new_score' class='textinput textInput form-control'>" 
-                + "<br>").insertAfter("#new_score")
+                $("<tr id='new_row'><td><b><label>Criteria "+n+"</label></b>"+
+                "<input name='"+name+"' id='new_entry' class='form-control'></td><td><b><label>Score "+n1+"</label></b>"+
+                "<input name='"+name1+"' id='new_score' class='textinput textInput form-control'></td></tr>").insertAfter("#new_row")
                 $this.off('input', arguments.callee)
 			    $this.removeAttr('id')
 			    $th.removeAttr('id')
+			    $("#new_row").removeAttr('id')
 			});
 		});
 	</script>
@@ -37,6 +35,7 @@
 			<a href="{% url 'loan_admin:configuration' %}"> Configuration </a>&nbsp &nbsp &nbsp
 			<a href="{% url 'loan_admin:uploadCSV' %}"> Upload Dataset </a>
 			<h1> Criteria </h1>
+			<br>
 			{% if messages %}
 			<ul class="messages">
 			    {% for message in messages %}
@@ -46,20 +45,45 @@
 			{% endif %}
 			<form action="{% url 'loan_admin:cri' %}" method="POST" role="form" class=".interest-list-new">
 				{% csrf_token %}
-				{{ form|crispy }}
-				<!-- {{ form.feature }}
+				<b>{{ form.feature.label }}</b>
+				{{ form.feature }}
+				<br><br>
+				<b>{{ form.category.label }}</b>
 				{{ form.category }}
+				<br><br>
+				<b>{{ form.product.label }}</b>
 				{{ form.product }}
-				{{ form.data_source }}
+				<br><br>
+				<b><label>Data Source*: &nbsp &nbsp</label></b>
+				{% for radio in form.data_source %}
+				    <label class="radio-inline" for="{{ radio.id_for_label }}">
+				        {{ radio.choice_label }}
+				        <span class="radio">{{ radio.tag }}</span>
+				    </label>
+				{% endfor %}
+				<br><br>
+				<b>{{ form.api.label }}</b>
 				{{ form.api }}
+				<br>
+				<b>{{ form.key.label }}</b>
 				{{ form.key }}
-				{% for field in form.get_entries %}
-			    	{{ field }}
-				{% endfor %} -->
-				
-			    <input type="submit" value="Submit" class="btn btn-success">
+				<br>
+				<table>
+					<tr id="new_row">
+						<td>
+							<b>{{ form.entry_1.label }}</b>
+							{{ form.entry_1 }}
+						</td>
+						<td>
+							<b>{{ form.score_1.label }}</b>
+							{{ form.score_1 }}
+						</td>
+					</tr>
+				</table>
+				<input type="button" class="new btn-default btn-sm" value="Add Row">
+				<br><br>
+			    <input type="submit" value="Submit" class="btn btn-primary">
 			</form>
-			<button class="new">Add Row</button>
 		</div>
 	</div>
 </div>

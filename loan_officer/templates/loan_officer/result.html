@@ -13,6 +13,9 @@
 			<a href="{% url 'loan_officer:uploadCSV' %}"> Upload Dataset </a>
 			<h1> Results </h1>
 			<table>
+				{% if not_ready %}
+					<tr><td>Model(s) is/are not ready.</td></tr>
+				{% endif %}
 				{% if rule %}
 					<tr><td><b>Score: </b>{{ rule }}</td></tr>
 				{% endif %}

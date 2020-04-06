@@ -4,6 +4,9 @@
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 <div class="container">
 	<div class="row justify-content-center">
@@ -13,7 +16,7 @@
 			<a href="{% url 'loan_admin:index' %}"> Add Feature </a>&nbsp &nbsp &nbsp
 			<a href="{% url 'loan_admin:configuration' %}"> Configuration </a>&nbsp &nbsp &nbsp
 			<a href="{% url 'loan_admin:criteria' %}"> Criteria </a>&nbsp&nbsp&nbsp
-			<h1> Upload Dataset </h1>
+			<h1> Upload Dataset </h1><br>
 			{% if messages %}
 			<ul class="messages">
 			    {% for message in messages %}
@@ -23,9 +26,38 @@
 			{% endif %}
 			<form action="{% url 'loan_admin:addApplicant' %}" method="POST" enctype= multipart/form-data>
 				{% csrf_token %}
-				{{ form|crispy }}
-			    <input type="submit" value="Submit" class="btn btn-success">
+					<div class="custom-file">
+						{{ form.file }}
+						<label class="custom-file-label" for="customFile">Choose file</label>
+					</div> <br><br>
+					<table>	
+					<tr>
+						<td>
+							<label><b>Column Names </b>(separated by comma)&nbsp&nbsp&nbsp&nbsp</label>
+						</td>
+						<td>
+							{{ form.columns }}<br>
+						</td>
+					</tr>
+					<tr>						
+						<td>
+							<label><b>Nominal Features</b> (separated by comma)</label></td></label>
+						</td>
+						<td>
+							{{ form.nominal_features }}<br>
+						</td>
+					</tr>
+				</table>
+				<br>
+				<input type="submit" value="Submit" class="btn btn-primary">
 			</form>
 		</div>
 	</div>
 </div>
+
+<script>		
+	$(".custom-file-input").on("change", function() {
+	  var fileName = $(this).val().split("\\").pop();
+	  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+	});
+</script>
