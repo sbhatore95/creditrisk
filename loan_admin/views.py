@@ -10,7 +10,6 @@ from django.urls import reverse
 from urllib.parse import urlencode
 from .forms import UploadFileForm, CriteriaForm
 import sys
-from .counter import *
 from django.contrib import messages
 # Create your views here.
 

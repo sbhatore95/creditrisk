@@ -41,7 +41,7 @@ def result(request):
 		ml_approve = ans[2].split(',')[0]
 		ml_napprove = ans[2].split(',')[1]
 	context = {'rule': ans[0], 'stat_approve': stat_approve, 'stat_napprove': stat_napprove, 
-	'ml_approve': ml_approve, 'ml_napprove': ml_napprove}
+	'ml_approve': ml_approve, 'ml_napprove': ml_napprove, 'statandml':ans[3]}
 	return render(request, 'loan_officer/result.html', context)
 
 def uploadCSV(request):

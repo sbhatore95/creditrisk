@@ -2,6 +2,30 @@ import abc
 from .models import SavedState
 from loan_admin.models import UploadFile, Criteria, CriteriaHelper, Configuration
 from .project import *
+from loan_admin.predictor import *
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+from sklearn import preprocessing
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.model_selection import train_test_split
+from imblearn.over_sampling import SMOTE
+from sklearn.neural_network import MLPClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report,confusion_matrix
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+#import xgboost as xgb
+from sklearn import svm
+from sklearn.ensemble import IsolationForest
+import warnings
+from sklearn.metrics import plot_confusion_matrix
+from sklearn.decomposition import PCA
+import pickle 
+import codecs
+from six.moves import cPickle
 
 class RuleBasedStrategyAbstract(object):
 	__metaclass__ = abc.ABCMeta
@@ -65,6 +89,13 @@ class RuleBasedStrategy(RuleBasedStrategyAbstract):
 class DataBasedStrategyAbstract(object):
 	__metaclass__ = abc.ABCMeta
 
+	def __init__(self):
+		pass
+
+	@abc.abstractmethod
+	def predict(self, loan_id):
+		pass
+
 	def parse(self, loan_id):
 		f = open('test_id_dataset.csv', 'r')
 		line = f.readline()
@@ -80,16 +111,58 @@ class DataBasedStrategyAbstract(object):
 		return sp
 
 	@abc.abstractmethod
-	def predict(self, loan_id):
-		"""Required Method"""
+	def load_model(self, model):
+		pass
+
+	def preprocess(self, arr):
+		reloaded = self.model
+		self.df = pd.DataFrame(arr.reshape(-1, len(arr)), columns = reloaded.Test_columns)
+				
+		for col in reloaded.le_name_mapping:
+			self.df[col] = reloaded.le_name_mapping[col][self.df[col][0]]
+	   
+		if(len(reloaded.Nominal_Converted_features) > 0):
+			z = np.zeros(len(reloaded.Nominal_Converted_features), dtype = int)
+			nominal_df = pd.DataFrame(z.reshape(-1, len(z)), columns = 
+				reloaded.Nominal_Converted_features)
+
+			for col in reloaded.Nominal_Features:
+				nominal_df[col+"_"+str(self.df[col][0])] = 1
+				self.df = self.df.drop(col, 1)
+			self.df = pd.concat([self.df, nominal_df], axis = 1)
+		
+		#Standardization of data frame
+		
+		df_std = pd.DataFrame(reloaded.std_scale.transform(self.df[reloaded.Num_Features]), 
+			columns = reloaded.Num_Features)
+		self.df = self.df.drop(reloaded.Num_Features, axis = 1)
+		self.df = pd.concat([self.df,df_std], axis = 1)
 
 class StatisticalStrategy(DataBasedStrategyAbstract):
+	def load_model(self):
+		f = open('statistical.save', 'rb')
+		reloaded = cPickle.load(f)
+		f.close()
+		self.model = reloaded
+
 	def predict(self, loan_id):
-		return load_and_predict("statistical", self.parse(loan_id))
+		self.load_model()
+		super(StatisticalStrategy, self).preprocess(np.array(self.parse(loan_id)))
+		result = self.model.trained_model.predict_proba(self.df)
+		return (str(result[0][0])+ ","+str(result[0][1]))
 
 class MLStrategy(DataBasedStrategyAbstract):
+	def load_model(self):
+		f = open('ml.save', 'rb')
+		reloaded = cPickle.load(f)
+		f.close()
+		self.model = reloaded
+
 	def predict(self, loan_id):
-		return load_and_predict("ml", self.parse(loan_id))
+		self.load_model()
+		super(MLStrategy, self).preprocess(np.array(self.parse(loan_id)))
+		result = self.model.trained_model.predict_proba(self.df)
+		return (str(result[0][0])+ ","+str(result[0][1]))
 
 rs = RuleBasedStrategy()
 ss = StatisticalStrategy()
@@ -125,7 +198,7 @@ class Classifier:
 		self.ml = ml
 
 	def doClassification(self, loan_id):
-		ans = [None, None, None]
+		ans = [None, None, None, None]
 		if(self.rule):			
 			classifier = RuleBasedClassifier()
 			ans[0] = classifier.generate_score(loan_id)
@@ -135,4 +208,6 @@ class Classifier:
 		if(self.ml):
 			classifier = MLBasedClassifier()
 			ans[2] = classifier.predict(loan_id)
+		if(self.stat and self.ml):
+			ans[3] = (SavedState.objects.all().first().statandml == 'stat')
 		return ans

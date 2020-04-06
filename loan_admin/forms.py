@@ -10,6 +10,7 @@ from loan_officer.models import SavedState
 from loan_officer.project import *
 from .tasks import *
 import threading
+from .data_processor import *
 
 class FeatureForm(forms.ModelForm):
 	VALUE_CHOICES = [
@@ -80,46 +81,29 @@ class UploadFileForm(forms.ModelForm):
         'id': "customFile", 'name': 'filename'}))
 	columns = forms.CharField( widget=forms.Textarea )
 	nominal_features = forms.CharField( widget=forms.Textarea )
+	target = forms.CharField(label="Target feature", 
+		widget=forms.TextInput(attrs={'class': 'form-control'}))
+	
 	def __init__(self, *args, **kwargs):
 		super(UploadFileForm, self).__init__(*args, **kwargs)
 		self.fields['file'] = forms.FileField(widget=forms.FileInput(attrs={'class': 'custom-file-input', 
         'id': "customFile", 'name': 'filename'}))
+	
 	class Meta:
 		model = UploadFile
 		fields = '__all__'
+	
 	def process_data(self, dict, f):
 		if(UploadFile.objects.all().first() == None):
-			m = UploadFile(file=f, columns=dict['columns'], nominal_features=dict['nominal_features'])
+			m = UploadFile(target=dict['target'], columns=dict['columns'], nominal_features=dict['nominal_features'])
 			m.save()
 		else:
 			m = UploadFile.objects.all().first()
-			m.file = f
+			m.target = dict['target']
 			m.columns = dict['columns']
 			m.nominal_features = dict['nominal_features']
 			m.save()
-		fw = open('dataset.csv', 'w')
-		# with open('train_id_dataset.csv', 'wb+') as destination:
-		# 	for chunk in f.chunks():
-		# 		destination.write(chunk)
-		# 	destination.close()
-		# f.seek(0)
-		f.seek(0)
-		line = f.readline()
-		count = 0
-		while(line != b''):
-			line = line.decode('ASCII')
-			flag = 0
-			lout = ""
-			for i in range(0, len(line)):
-				if(flag == 1):
-					lout = lout + line[i]
-				if(line[i] == ','):
-					flag = 1
-			fw.write(lout)
-			line = f.readline()
-			count = count + 1
-			# print(line)
-		fw.close()
+
 		if(SavedState.objects.all().first() == None):
 			pass
 		else:
@@ -127,8 +111,11 @@ class UploadFileForm(forms.ModelForm):
 			m.stat = "false"
 			m.ml = "true"
 			m.save()
+		with open('id_dataset.csv', 'wb+') as destination:
+			for chunk in f.chunks():
+				destination.write(chunk)
+			destination.close()
 		print("calling bg task")
-		# start()
 		t = threading.Thread(target=bg_task)
 		t.setDaemon(True)
 		t.start()

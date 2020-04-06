@@ -539,5 +539,3 @@ def load_and_predict(model, arr):
 # In[ ]:
 
 
-
-

@@ -3,9 +3,10 @@ from django import forms
 # Create your models here.
 
 class UploadFile(models.Model):
+	target = models.CharField(default="loan_status", max_length=100)
 	columns = models.CharField(max_length=1000000)
 	nominal_features = models.CharField(max_length=1000000)
-# Create your models here.
+
 class Feature(models.Model):
 	VALUE_CHOICES = [
 		('Bi', 'Binary'),
