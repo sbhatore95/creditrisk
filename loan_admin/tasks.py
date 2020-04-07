@@ -13,8 +13,9 @@ def bg_task():
 		target = ins.target
 		noml = ins.nominal_features.split(',')
 		print("---Learning started---")
-		DataProcessor.process("id_dataset.csv", "dataset.csv")
-		DataDriver.learn_and_save(cols, target, noml, "dataset.csv")
+		DataProcessor.process("media/credit_risk/dataset/id_dataset.csv", 
+			"media/credit_risk/dataset/dataset.csv")
+		DataDriver.learn_and_save(cols, target, noml, "media/credit_risk/dataset/dataset.csv")
 		print("---Learned and Saved---")
 		if(SavedState.objects.all().first() == None):
 			m = SavedState(stat="true", ml="false", statandml="true")

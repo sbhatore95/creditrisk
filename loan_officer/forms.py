@@ -11,7 +11,7 @@ class FileUploadForm(forms.Form):
         'id': "customFile", 'name': 'filename'}))
 	
     def process_data(self, f):
-        with open('test_id_dataset.csv', 'wb+') as destination:
+        with open('media/credit_risk/dataset/test_id_dataset.csv', 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
             destination.close()

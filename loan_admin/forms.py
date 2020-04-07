@@ -111,7 +111,7 @@ class UploadFileForm(forms.ModelForm):
 			m.stat = "false"
 			m.ml = "true"
 			m.save()
-		with open('id_dataset.csv', 'wb+') as destination:
+		with open('media/credit_risk/dataset/id_dataset.csv', 'wb+') as destination:
 			for chunk in f.chunks():
 				destination.write(chunk)
 			destination.close()

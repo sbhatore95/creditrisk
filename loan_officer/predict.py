@@ -2,7 +2,6 @@ import abc
 from .models import SavedState
 from loan_admin.models import UploadFile, Criteria, CriteriaHelper, Configuration
 from .project import *
-from loan_admin.predictor import *
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -26,6 +25,8 @@ from sklearn.decomposition import PCA
 import pickle 
 import codecs
 from six.moves import cPickle
+import os
+from django.conf import settings
 
 class RuleBasedStrategyAbstract(object):
 	__metaclass__ = abc.ABCMeta
@@ -36,7 +37,7 @@ class RuleBasedStrategyAbstract(object):
 
 class RuleBasedStrategy(RuleBasedStrategyAbstract):
 	def generate_score(self, loan_id):
-		f = open('test_id_dataset.csv', 'r')
+		f = open(os.path.join(settings.MEDIA_ROOT, 'credit_risk/dataset/test_id_dataset.csv'), 'r')
 		line = f.readline()
 		array = line.split(',')
 		array[-1] = array[-1].replace('\n', '')
@@ -97,7 +98,7 @@ class DataBasedStrategyAbstract(object):
 		pass
 
 	def parse(self, loan_id):
-		f = open('test_id_dataset.csv', 'r')
+		f = open('media/credit_risk/dataset/test_id_dataset.csv', 'r')
 		line = f.readline()
 		sp = line.split(',')
 		count = 0
@@ -140,7 +141,7 @@ class DataBasedStrategyAbstract(object):
 
 class StatisticalStrategy(DataBasedStrategyAbstract):
 	def load_model(self):
-		f = open('statistical.save', 'rb')
+		f = open('media/credit_risk/dataset/statistical.save', 'rb')
 		reloaded = cPickle.load(f)
 		f.close()
 		self.model = reloaded
@@ -153,7 +154,7 @@ class StatisticalStrategy(DataBasedStrategyAbstract):
 
 class MLStrategy(DataBasedStrategyAbstract):
 	def load_model(self):
-		f = open('ml.save', 'rb')
+		f = open('media/credit_risk/dataset/ml.save', 'rb')
 		reloaded = cPickle.load(f)
 		f.close()
 		self.model = reloaded

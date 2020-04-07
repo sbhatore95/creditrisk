@@ -32,7 +32,7 @@ class DataDriver:
 			if(float(acc) > acc_highest_stat):
 				acc_highest_stat = float(acc)
 		to_save = models_statistical[acc_statistical.index(acc_highest_stat)]
-		f = open('statistical.save', 'wb')
+		f = open('media/credit_risk/dataset/statistical.save', 'wb')
 		pickled = cPickle.dump(to_save, f)
 		f.close()
 		acc_highest_ml = 0
@@ -40,7 +40,7 @@ class DataDriver:
 			if(float(acc) > acc_highest_ml):
 				acc_highest_ml = float(acc)
 		to_save = models_ml[acc_ml.index(acc_highest_ml)]
-		f = open('ml.save', 'wb')
+		f = open('media/credit_risk/dataset/ml.save', 'wb')
 		pickled = cPickle.dump(to_save, f)
 		f.close()
 		

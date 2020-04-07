@@ -18,8 +18,6 @@ def index(request):
 		status_bg = ins.stat == "true"
 	context = {'form':form, 'status_bg':status_bg}
 	return render(request, 'loan_officer/index.html', context)
-	# x = predict_score(columns, 'loan_status', nominal, "dataset.csv")
-	# print(x.Preprocess())
 
 def result(request):
 	loan_id = request.GET.get('loan_id')
