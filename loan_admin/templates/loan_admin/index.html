@@ -3,6 +3,33 @@
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+		    $("#get_value").on('click', function () {
+				console.log( $("#id_name").val() );
+				var name = $("#id_name").val();
+				var value = "Bi";
+				var data_type = "Nu";
+				var category = "In";
+				$.ajax({
+					url: '/loan_admin/ajax/get_feature_values/',
+					data: {
+						'name': name
+					},
+					dataType: 'json',
+					success: function (data) {
+						value = data.value;
+						data_type = data.data_type;
+						category = data.category;
+						$("#id_1 select").val(value);
+						$("#id_2 select").val(data_type);
+						$("#id_3 select").val(category);
+					}
+				});
+		    });
+		});
+  </script>
 </head>
 <div class="container">
 	<div class="row justify-content-center">
@@ -24,12 +51,19 @@
 				{% csrf_token %}
 				<b>{{ form.name.label }}</b>
 				{{ form.name }}<br>
-				<b>{{ form.value.label }}</b>
-				{{ form.value }}<br><br>
-				<b>{{ form.data_type.label }}</b>
-				{{ form.data_type }}<br><br>
-				<b>{{ form.category.label }}</b>
-				{{ form.category }}<br><br>
+				<div id="id_1">
+					<b>{{ form.value.label }}</b>
+					{{ form.value }}<br><br>
+				</div>
+				<div id="id_2">
+					<b>{{ form.data_type.label }}</b>
+					{{ form.data_type }}<br><br>
+				</div>
+				<div id="id_3">
+					<b>{{ form.category.label }}</b>
+					{{ form.category }}<br><br>
+				</div>
+				<input type="button" class="btn btn-success" value="Get" id="get_value">
 			    <input type="submit" value="Submit" class="btn btn-primary">
 			</form>
 		</div>

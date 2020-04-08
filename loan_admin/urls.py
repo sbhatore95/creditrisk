@@ -1,7 +1,8 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls import url
 
 app_name = 'loan_admin'
 urlpatterns = [
@@ -17,4 +18,5 @@ urlpatterns = [
 	path('uploadCSV', views.uploadCSV, name='uploadCSV'),
 	path('uploadCSV/?add3=ok4', views.uploadCSV, name='uploadCSV1'),
 	path('addApplicant', views.addApplicant, name='addApplicant'),
+	re_path(r'^ajax/get_feature_values/$', views.get_feature_values, name='get_feature_values'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

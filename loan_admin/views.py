@@ -11,6 +11,7 @@ from urllib.parse import urlencode
 from .forms import UploadFileForm, CriteriaForm
 import sys
 from django.contrib import messages
+from django.http import JsonResponse
 # Create your views here.
 
 def index(request):
@@ -32,6 +33,16 @@ def configuration(request):
 	else:
 		context = {'form':form}
 	return render(request, 'loan_admin/configuration.html', context)
+
+def get_feature_values(request):
+	name = request.GET.get('name')
+	ins = Feature.objects.filter(name=name).first()
+	data = {
+		'value': ins.value,
+		'data_type': ins.data_type,
+		'category': ins.category
+	}
+	return JsonResponse(data)
 
 @require_POST
 def addFeature(request):
@@ -58,12 +69,11 @@ def addConfiguration(request):
 def criteria(request):
 	add = request.GET.get('add2')
 	form = CriteriaForm()
-	counter = Counter()
 	if(add == 'ok3'):
 		messages.info(request, 'Record created successfully')
-		context = {'form':form, 'counter':counter, 'add':add}
+		context = {'form':form, 'add':add}
 	else:
-		context = {'form':form, 'counter':counter}
+		context = {'form':form}
 	return render(request, 'loan_admin/criteria.html', context)
 
 @require_POST
