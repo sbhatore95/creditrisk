@@ -66,6 +66,16 @@ def addConfiguration(request):
 		url = '{}?{}'.format(base_url, query_string)
 	return redirect(url)
 
+def get_configuration_values(request):
+	feature = request.GET.get('feature')
+	ins = Configuration.objects.filter(feature=feature).first()
+	data = {
+		'product': ins.product,
+		'weightage': ins.weightage,
+		'category': ins.category
+	}
+	return JsonResponse(data)
+
 def criteria(request):
 	add = request.GET.get('add2')
 	form = CriteriaForm()

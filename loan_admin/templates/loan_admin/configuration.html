@@ -3,6 +3,27 @@
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+		    $("#get_value").on('click', function () {
+				var feature = $("#id_feature").val();
+				console.log(feature);
+				$.ajax({
+					url: '/loan_admin/ajax/get_configuration_values/',
+					data: {
+						'feature': feature
+					},
+					dataType: 'json',
+					success: function (data) {
+						$("#id_1 select").val(data.category);
+						$("#id_2 select").val(data.product);
+						$("#id_weightage").val(data.weightage);
+					}
+				});
+		    });
+		});
+  </script>
 </head>
 <div class="container">
 	<div class="row justify-content-center">
@@ -24,13 +45,18 @@
 				{% csrf_token %}
 				<b>{{ form.feature.label }}*</b>
 				{{ form.feature }}<br><br>
-				<b>{{ form.category.label }}*</b>
-				{{ form.category }}<br><br>
-				<b>{{ form.product.label }}*</b>
-				{{ form.product }}<br><br>
+				<div id="id_1">
+					<b>{{ form.category.label }}*</b>
+					{{ form.category }}<br><br>
+				</div>
+				<div id="id_2">
+					<b>{{ form.product.label }}*</b>
+					{{ form.product }}<br><br>
+				</div>
 				<b>{{ form.weightage.label }}*</b>
 				{{ form.weightage }}
 				<br>
+				<input type="button" class="btn btn-success" value="Get" id="get_value">
 			    <input type="submit" value="Submit" class="btn btn-primary">
 			</form>
 		</div>

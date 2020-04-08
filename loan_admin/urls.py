@@ -19,4 +19,5 @@ urlpatterns = [
 	path('uploadCSV/?add3=ok4', views.uploadCSV, name='uploadCSV1'),
 	path('addApplicant', views.addApplicant, name='addApplicant'),
 	re_path(r'^ajax/get_feature_values/$', views.get_feature_values, name='get_feature_values'),
+	re_path(r'^ajax/get_configuration_values/$', views.get_configuration_values, name='get_configuration_values'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
