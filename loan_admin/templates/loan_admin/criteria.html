@@ -23,6 +23,59 @@
 			    $th.removeAttr('id')
 			    $("#new_row").removeAttr('id')
 			});
+
+		    $("#get_value").on('click', function () {
+				var feature = $("#id_feature").val();
+				var category = $("#id_category").val();
+				var product = $("#id_product").val();
+				$.ajax({
+					url: '/loan_admin/ajax/get_criteria_values/',
+					data: {
+						'feature': feature,
+						'category': category,
+						'product': product
+					},
+					dataType: 'json',
+					success: function (data) {
+						console.log(data.data_source.toString())
+						$("#id_data_source_" + parseInt(data.data_source-1).toString()).attr('checked', true);
+						$("#id_api").val(data.api);
+						$("#id_key").val(data.key);
+						console.log(data.entries);
+						if(data.entries != ""){
+							var entry_arr = data.entries.split(',');
+							var score_arr = data.scores.split(',');
+							$("#new_entry").val(entry_arr[0]);
+							$("#new_score").val(score_arr[0]);
+							$("#new_entry").attr("name", "entry_1")
+							$("#new_score").attr("name", "score_1")
+							entry_arr.shift()
+							score_arr.shift()
+							var i;
+							for(i=0;i<entry_arr.length-1;i++){
+								console.log(entry_arr[i]);
+								let n = i + 2;
+								let n1 = n;
+				                let name = 'entry_' + n
+							    let name1 = 'score_' + n1
+				                $("<tr id='new_row'><td><b><label>Criteria "+n+"</label></b>"+
+				                "<input name='"+name+"' id='entry' class='form-control' value='"+entry_arr[i]+"'></td><td><b><label>Score "+n1+"</label></b>"+
+				                "<input name='"+name1+"' id='score' class='textinput textInput form-control' value='"+score_arr[i]+"'></td></tr>").insertAfter("#new_row");
+				                $("#new_row").removeAttr('id');               
+							}
+							console.log(entry_arr);
+							let n = i + 2;
+							let n1 = n;
+			                let name = 'entry_' + n;
+						    let name1 = 'score_' + n1;
+							$("<tr id='new_row'><td><b><label>Criteria "+n+"</label></b>"+
+				                "<input name='"+name+"' id='new_entry' class='form-control' value='"+entry_arr[i]+"'></td><td><b><label>Score "+n1+"</label></b>"+
+				                "<input name='"+name1+"' id='new_score' class='textinput textInput form-control' value='"+score_arr[i]+"'></td></tr>").insertAfter("#new_row");
+						}
+					}
+
+				});
+			});
 		});
 	</script>
 </head>
@@ -57,8 +110,8 @@
 				<b><label>Data Source*: &nbsp &nbsp</label></b>
 				{% for radio in form.data_source %}
 				    <label class="radio-inline" for="{{ radio.id_for_label }}">
-				        {{ radio.choice_label }}
 				        <span class="radio">{{ radio.tag }}</span>
+				        {{ radio.choice_label }}
 				    </label>
 				{% endfor %}
 				<br><br>
@@ -82,6 +135,7 @@
 				</table>
 				<input type="button" class="new btn-default btn-sm" value="Add Row">
 				<br><br>
+				<input type="button" class="btn btn-success" value="Get" id="get_value">
 			    <input type="submit" value="Submit" class="btn btn-primary">
 			</form>
 		</div>

@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 
 from .models import Feature
 from .models import Configuration
+from .models import Criteria, CriteriaHelper
 from .forms import FeatureForm
 from .forms import ConfigurationForm
 
@@ -103,6 +104,41 @@ def addCriteria(request):
 		query_string =  urlencode({'add2': 'ok3'})
 		url = '{}?{}'.format(base_url, query_string)
 	return redirect(url)
+
+def get_criteria_values(request):
+	feature = request.GET.get('feature')
+	category = request.GET.get('category')
+	product = request.GET.get('product')
+	ins = Criteria.objects.filter(feature=feature).filter(category=category).filter(product=product).first()
+	crih_ins = CriteriaHelper.objects.filter(criteria=ins)
+	entries = ""
+	scores = ""
+	print(len(crih_ins))
+	if(len(crih_ins) != 0):
+		entries += crih_ins[0].entry
+		scores += str(crih_ins[0].score)
+		i = 0
+		for instance in crih_ins:
+			print(len(crih_ins))
+			if(i == 0):
+				i += 1
+				continue
+			print(entries)
+			entries += ','
+			scores += ','
+			entries += instance.entry
+			scores += str(instance.score)
+			print(entries)
+	print(entries)
+	data = {
+		'api': ins.api,
+		'data_source': ins.data_source,
+		'key': ins.key,
+		'entries': entries,
+		'scores': scores
+	}
+	return JsonResponse(data)
+
 
 def uploadCSV(request):
 	add = request.GET.get('add3')

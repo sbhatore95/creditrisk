@@ -20,4 +20,5 @@ urlpatterns = [
 	path('addApplicant', views.addApplicant, name='addApplicant'),
 	re_path(r'^ajax/get_feature_values/$', views.get_feature_values, name='get_feature_values'),
 	re_path(r'^ajax/get_configuration_values/$', views.get_configuration_values, name='get_configuration_values'),
+	re_path(r'^ajax/get_criteria_values/$', views.get_criteria_values, name='get_criteria_values'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
