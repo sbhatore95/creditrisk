@@ -187,15 +187,15 @@ class RandomForest(Trainer):
 
 	def set_model(self):
 		print("------- Random Forest ---------")
-        rfc = RandomForestClassifier()
-        param_grid = { 
-            # 'n_estimators': [200, 500],
-            'n_estimators': [500],
-            # 'max_features': ['auto', 'sqrt', 'log2'],
-            'max_features': ['auto'],
-            # 'max_depth' : [4,5,6,7,8],
-            'max_depth' : [8],
-            # 'criterion' :['gini', 'entropy']
-            'criterion' :['gini']
-        }
-        self.Random_forest_model = GridSearchCV(estimator=rfc, param_grid=param_grid, cv= 10)
+		rfc = RandomForestClassifier()
+		param_grid = { 
+			# 'n_estimators': [200, 500],
+			'n_estimators': [500],
+			# 'max_features': ['auto', 'sqrt', 'log2'],
+			'max_features': ['auto'],
+			# 'max_depth' : [4,5,6,7,8],
+			'max_depth' : [8],
+			# 'criterion' :['gini', 'entropy']
+			'criterion' :['gini']
+		}
+		self.Random_forest_model = GridSearchCV(estimator=rfc, param_grid=param_grid, cv= 10)

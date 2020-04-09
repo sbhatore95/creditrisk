@@ -41,7 +41,8 @@ def get_feature_values(request):
 	data = {
 		'value': ins.value,
 		'data_type': ins.data_type,
-		'category': ins.category
+		'category': ins.category,
+		'status': ins.status
 	}
 	return JsonResponse(data)
 

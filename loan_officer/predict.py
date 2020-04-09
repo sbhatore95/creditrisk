@@ -1,6 +1,6 @@
 import abc
 from .models import SavedState
-from loan_admin.models import UploadFile, Criteria, CriteriaHelper, Configuration
+from loan_admin.models import UploadFile, Criteria, CriteriaHelper, Configuration, Feature
 from .project import *
 import pandas as pd
 import numpy as np
@@ -61,8 +61,16 @@ class RuleBasedStrategy(RuleBasedStrategyAbstract):
 					criteria.product == configuration.product and 
 					criteria.category == configuration.category)
 				if(truth):
+					print("------------------")
+					ins = Feature.objects.filter(name=criteria.feature).first()
+					if(ins):
+						if(ins.status == False):
+							continue
+					print(criteria.feature)
+					# if(ins.status == False):
+					# 	continue
 					if(criteria.data_source == '3'): # for SQL
-						feature = criteria.api.split(' ')[-1]
+						feature = criteria.api.split(' ')[1]
 					if(feature in array):
 						feature_score = 0
 						for crhelper in helper:

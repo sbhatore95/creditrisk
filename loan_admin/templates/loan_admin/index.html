@@ -9,9 +9,6 @@
 		    $("#get_value").on('click', function () {
 				console.log( $("#id_name").val() );
 				var name = $("#id_name").val();
-				var value = "Bi";
-				var data_type = "Nu";
-				var category = "In";
 				$.ajax({
 					url: '/loan_admin/ajax/get_feature_values/',
 					data: {
@@ -19,12 +16,11 @@
 					},
 					dataType: 'json',
 					success: function (data) {
-						value = data.value;
-						data_type = data.data_type;
-						category = data.category;
-						$("#id_1 select").val(value);
-						$("#id_2 select").val(data_type);
-						$("#id_3 select").val(category);
+						$("#id_1 select").val(data.value);
+						$("#id_2 select").val(data.data_type);
+						$("#id_3 select").val(data.category);
+						console.log(data.status);
+						$("#customCheck1").prop("checked", data.status);
 					}
 				});
 		    });
@@ -62,6 +58,12 @@
 				<div id="id_3">
 					<b>{{ form.category.label }}</b>
 					{{ form.category }}<br><br>
+				</div>
+				<div class="custom-control custom-checkbox mb-3">
+						{{ form.status }}
+						<label class="custom-control-label" for="customCheck1">
+							<b>{{ form.status.label }}</b>
+						</label>
 				</div>
 				<input type="button" class="btn btn-success" value="Get" id="get_value">
 			    <input type="submit" value="Submit" class="btn btn-primary">

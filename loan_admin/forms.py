@@ -38,9 +38,11 @@ class FeatureForm(forms.ModelForm):
 		widget=forms.Select(attrs={'class': 'custom-select'}))
 	category = forms.ChoiceField(label="Category*", choices=CATEGORY_CHOICES, required=True,
 		widget=forms.Select(attrs={'class': 'custom-select'}))
+	status = forms.BooleanField(label="Status", required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'custom-control-input', 'id': "customCheck1"}))
 	class Meta:
 		model = Feature
-		fields = ['name', 'value', 'data_type', 'category']
+		fields = ['name', 'value', 'data_type', 'category', 'status']
 
 class ConfigurationForm(forms.ModelForm):
 	CATEGORY_CHOICES = [
@@ -65,11 +67,9 @@ class ConfigurationForm(forms.ModelForm):
 		x = Feature.objects.values('name')
 		print(x)
 		FEATURE_CHOICES = []
-		a = '1'
 		for i in x:
-			b = (a, i['name'])
+			b = (i['name'], i['name'])
 			FEATURE_CHOICES.append(b)
-			a = a + '1'
 		self.fields['feature'] = forms.ChoiceField(label="Feature", choices=FEATURE_CHOICES, 
 			required=True, widget=forms.Select(attrs={'class': 'custom-select'}))
 	class Meta:
@@ -160,11 +160,9 @@ class CriteriaForm(forms.ModelForm):
 		super(CriteriaForm, self).__init__(*args, **kwargs)
 		x = Feature.objects.values('name')
 		FEATURE_CHOICES = []
-		a = '1'
 		for field in x:
-			b = (a, field['name'])
+			b = (field['name'], field['name'])
 			FEATURE_CHOICES.append(b)
-			a = a + '1'
 		self.fields['feature'] = forms.ChoiceField(choices=FEATURE_CHOICES, required=True, 
 			widget=forms.Select(attrs={'class': 'custom-select'}))
 		criterias = CriteriaHelper.objects.filter(
