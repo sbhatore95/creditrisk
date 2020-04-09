@@ -72,3 +72,7 @@ class CriteriaHelper(models.Model):
 		on_delete=models.CASCADE,)
 	entry = models.CharField(max_length=1000000)
 	score = models.IntegerField()
+
+class SetScale(models.Model):
+	red = models.IntegerField()
+	green = models.IntegerField()

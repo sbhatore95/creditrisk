@@ -1,7 +1,7 @@
 from django import forms
 from .models import Feature
 from .models import Configuration
-from .models import UploadFile, Criteria, CriteriaHelper
+from .models import UploadFile, Criteria, CriteriaHelper, SetScale
 import csv
 import io
 from bootstrap4.widgets import RadioSelectButtonGroup
@@ -276,3 +276,13 @@ class CriteriaForm(forms.ModelForm):
 	class Meta:
 		model = Criteria
 		fields = ['feature','category','product','data_source','api','key']
+
+class SetScaleForm(forms.ModelForm):
+	red = forms.FloatField(label="Red", required=True, widget=forms.NumberInput(
+		{'id': 'red'}))
+	green = forms.FloatField(label="Green", required=True, widget=forms.NumberInput(
+		{'id': 'green'}))
+
+	class Meta:
+		model = SetScale
+		fields = '__all__'

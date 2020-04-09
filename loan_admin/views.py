@@ -3,13 +3,13 @@ from django.views.decorators.http import require_POST
 
 from .models import Feature
 from .models import Configuration
-from .models import Criteria, CriteriaHelper
+from .models import Criteria, CriteriaHelper, SetScale
 from .forms import FeatureForm
 from .forms import ConfigurationForm
 
 from django.urls import reverse
 from urllib.parse import urlencode
-from .forms import UploadFileForm, CriteriaForm
+from .forms import UploadFileForm, CriteriaForm, SetScaleForm
 import sys
 from django.contrib import messages
 from django.http import JsonResponse
@@ -140,6 +140,33 @@ def get_criteria_values(request):
 	}
 	return JsonResponse(data)
 
+def set_scale(request):
+	add = request.GET.get('add4')
+	form = SetScaleForm()
+	if(add == 'ok5'):
+		messages.info(request, 'Record created successfully')
+		context = {'form':form, 'add':add}
+	else:
+		context = {'form':form}
+	return render(request, 'loan_admin/set_scale.html', context)
+
+def addScale(request):
+	form = SetScaleForm(request.POST)
+	url = reverse('loan_admin:set_scale')
+	if form.is_valid():
+		form.save()
+		base_url = reverse('loan_admin:set_scale')
+		query_string =  urlencode({'add4': 'ok5'})
+		url = '{}?{}'.format(base_url, query_string)
+	return redirect(url)
+
+def get_scale_values(request):
+	ins = SetScale.objects.all().first()
+	data = {
+		'red': ins.red,
+		'green': ins.green,
+	}
+	return JsonResponse(data)
 
 def uploadCSV(request):
 	add = request.GET.get('add3')
