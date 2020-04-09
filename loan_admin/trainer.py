@@ -110,13 +110,14 @@ class Trainer(metaclass=ABCMeta):
 	def set_model(self):
 		"""Define model here."""
 
-	@abstractmethod
 	def fit_model(self):
-		"""This takes the vectorised data and returns a trained model."""
+		self.trained_model.fit(self.X_train,self.Y_train)
 
-	@abstractmethod
 	def generate_metrics(self):
-		"""Generates metric with trained model and test data."""
+		Y_pred = self.trained_model.predict(self.X_test)
+		wt_ac, ac = super(KNN, self).weighted_accuracy(self.Y_test, Y_pred)
+		self.acc = ac
+		return ac
 
 	def save_model(self, model_name):
 		"""This method saves the model in our required format."""
@@ -131,15 +132,6 @@ class KNN(Trainer):
 		params = {'n_neighbors':[i for i in range(1,50,2)]}
 		self.trained_model = GridSearchCV(model, param_grid=params,cv=10,scoring='f1')
 
-	def fit_model(self):
-		self.trained_model.fit(self.X_train,self.Y_train)
-
-	def generate_metrics(self):
-		Y_pred = self.trained_model.predict(self.X_test)
-		wt_ac, ac = super(KNN, self).weighted_accuracy(self.Y_test, Y_pred)
-		self.acc = ac
-		return ac
-
 class Logistic(Trainer):
 	def __init__(self, Column_Names, Output_Feature, Nominal_Features, Dataset_Location):
 		super(Logistic, self).__init__(Column_Names, Output_Feature, Nominal_Features, 
@@ -150,11 +142,60 @@ class Logistic(Trainer):
 		param_grid = {'C': [0.01, 0.1, 1,10,100] ,'penalty' : ['l1', 'l2']}
 		self.trained_model = GridSearchCV(LogisticRegression(), param_grid, cv=10, scoring='f1')
 
-	def fit_model(self):
-		self.trained_model.fit(self.X_train, self.Y_train)
+class SVM(Trainer):
+	def __init__(self, Column_Names, Output_Feature, Nominal_Features, Dataset_Location):
+		super(SVM, self).__init__(Column_Names, Output_Feature, Nominal_Features, 
+			Dataset_Location)
 
-	def generate_metrics(self):
-		Y_pred = self.trained_model.predict(self.X_test)
-		wt_ac, ac = super(Logistic, self).weighted_accuracy(self.Y_test, Y_pred)
-		self.acc = ac
-		return ac
+	def set_model(self):
+		C = [0.1, 1, 10]
+		# kernels = ['linear', 'rbf', 'poly']
+		kernels = ['rbf']
+		param_grid = {'kernel':kernels, 'C':C}
+		print("1")
+		self.trained_model = GridSearchCV(svm.SVC(probability = True), param_grid, 
+			cv=10, scoring='f1')
+
+class NN_Network(Trainer):
+	def __init__(self, Column_Names, Output_Feature, Nominal_Features, Dataset_Location):
+		super(NN_Network, self).__init__(Column_Names, Output_Feature, Nominal_Features, 
+			Dataset_Location)
+
+	def set_model(self):
+		print("------- Neural Network ---------")
+		warnings.filterwarnings("ignore")
+		Input = len(self.dataset.columns)
+		Mlp = MLPClassifier()
+		parameter_space = {
+		#'hidden_layer_sizes': [(Input,100,2), (Input,100,25,2),(Input,100,50,25,2)],
+		# 'hidden_layer_sizes' : np.arange(5, 12),
+		'hidden_layer_sizes' : np.arange(6, 10),
+		# 'solver': ['sgd', 'adam', 'lbfgs'],
+		'solver': ['adam'],
+		# 'alpha':10.0 ** -np.arange(1,7),
+		'alpha':10.0 ** -np.arange(1,4),
+		# 'batch_size' : [100,200,300,400,500],
+		'batch_size' : [200],
+		# 'learning_rate': ['constant','adaptive'],}
+		'learning_rate': ['constant'],}
+		self.trained_model = GridSearchCV(Mlp, parameter_space, n_jobs = -1, cv = 10)
+
+class RandomForest(Trainer):
+	def __init__(self, Column_Names, Output_Feature, Nominal_Features, Dataset_Location):
+		super(RandomForest, self).__init__(Column_Names, Output_Feature, Nominal_Features, 
+			Dataset_Location)
+
+	def set_model(self):
+		print("------- Random Forest ---------")
+        rfc = RandomForestClassifier()
+        param_grid = { 
+            # 'n_estimators': [200, 500],
+            'n_estimators': [500],
+            # 'max_features': ['auto', 'sqrt', 'log2'],
+            'max_features': ['auto'],
+            # 'max_depth' : [4,5,6,7,8],
+            'max_depth' : [8],
+            # 'criterion' :['gini', 'entropy']
+            'criterion' :['gini']
+        }
+        self.Random_forest_model = GridSearchCV(estimator=rfc, param_grid=param_grid, cv= 10)
