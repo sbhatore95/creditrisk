@@ -1,73 +1,112 @@
 {% load crispy_forms_tags %}
-<head>
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script>
-		$(document).ready(function(){
-		    $("#get_value").on('click', function () {
-				console.log( $("#id_name").val() );
-				var name = $("#id_name").val();
-				$.ajax({
-					url: '/loan_admin/ajax/get_feature_values/',
-					data: {
-						'name': name
-					},
-					dataType: 'json',
-					success: function (data) {
-						$("#id_1 select").val(data.value);
-						$("#id_2 select").val(data.data_type);
-						$("#id_3 select").val(data.category);
-						console.log(data.status);
-						$("#customCheck1").prop("checked", data.status);
-					}
-				});
-		    });
-		});
-  </script>
-</head>
-<div class="container">
-	<div class="row justify-content-center">
-    	<div class="col-8">
-			<img src="/media/credit_risk/logo.jpg"> &nbsp &nbsp &nbsp
-			<a href="{% url 'login:index' %}"> Home </a>&nbsp&nbsp&nbsp
-			<a href="{% url 'loan_admin:configuration' %}"> Configuration </a>&nbsp &nbsp &nbsp
-			<a href="{% url 'loan_admin:criteria' %}"> Criteria </a>&nbsp&nbsp&nbsp
-			<a href="{% url 'loan_admin:uploadCSV' %}"> Upload Dataset </a>
-			<h1> Add Feature </h1>
-			{% if messages %}
-			<ul class="messages">
-			    {% for message in messages %}
-			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-			    {% endfor %}
-			</ul>
-			{% endif %}
-			<form action="{% url 'loan_admin:add' %}" method="POST" role="form">
-				{% csrf_token %}
-				<b>{{ form.name.label }}</b>
-				{{ form.name }}<br>
-				<div id="id_1">
-					<b>{{ form.value.label }}</b>
-					{{ form.value }}<br><br>
+{% load static %}
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
+	</head>
+	<body>
+		<div class="container">
+			<nav class="vertical-nav bg-white" id="sidebar">
+				 <div class="media d-flex align-items-center">
+				 	<img src="/media/credit_risk/logo.jpg" alt="..." class="">
+				 </div>
+				<ul class="nav flex-column bg-white">
+					<li class="nav-item">
+						<a href="{% url 'login:index' %}" class="nav-link text-dark font-italic">
+            				Home
+        				</a>
+					</li>
+					<li class="nav-item">
+						<a href="{% url 'login:login' %}" class="nav-link text-dark font-italic">
+            				Login
+        				</a>
+					</li>
+					<li class="nav-item">
+						<a href="{% url 'loan_admin:index' %}" class="nav-link text-dark font-italic bg-light">
+            				Add Feature
+        				</a>
+					</li>
+					<li class="nav-item">
+						<a href="{% url 'loan_admin:configuration' %}" class="nav-link text-dark font-italic">
+            				Configuration
+        				</a>
+					</li>
+					<li class="nav-item">
+						<a href="{% url 'loan_admin:criteria' %}" class="nav-link text-dark font-italic">
+            				Criteria
+        				</a>
+					</li>
+					<li class="nav-item">
+						<a href="{% url 'loan_admin:uploadCSV' %}" class="nav-link text-dark font-italic">
+            				Upload Dataset
+        				</a>
+					</li>
+				</ul>
+			</nav>
+			<div class="page-content" id="content">
+				<h1> Add Feature </h1>
+				{% if messages %}
+				<div class="alert alert-success" role="alert">
+				    {% for message in messages %}
+				    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+				    {% endfor %}
 				</div>
-				<div id="id_2">
-					<b>{{ form.data_type.label }}</b>
-					{{ form.data_type }}<br><br>
-				</div>
-				<div id="id_3">
-					<b>{{ form.category.label }}</b>
-					{{ form.category }}<br><br>
-				</div>
-				<div class="custom-control custom-checkbox mb-3">
-						{{ form.status }}
-						<label class="custom-control-label" for="customCheck1">
-							<b>{{ form.status.label }}</b>
-						</label>
-				</div>
-				<input type="button" class="btn btn-success" value="Get" id="get_value">
-			    <input type="submit" value="Submit" class="btn btn-primary">
-			</form>
+				{% endif %}
+				<form action="{% url 'loan_admin:add' %}" method="POST" role="form">
+					{% csrf_token %}
+					<b>{{ form.name.label }}</b>
+					{{ form.name }}<br>
+					<div id="id_1">
+						<b>{{ form.value.label }}</b>
+						{{ form.value }}<br><br>
+					</div>
+					<div id="id_2">
+						<b>{{ form.data_type.label }}</b>
+						{{ form.data_type }}<br><br>
+					</div>
+					<div id="id_3">
+						<b>{{ form.category.label }}</b>
+						{{ form.category }}<br><br>
+					</div>
+					<div class="custom-control custom-checkbox mb-3">
+							{{ form.status }}
+							<label class="custom-control-label" for="customCheck1">
+								<b>{{ form.status.label }}</b>
+							</label>
+					</div>
+					<input type="button" class="btn btn-success" value="Get" id="get_value">
+				    <input type="submit" value="Submit" class="btn btn-primary">
+				</form>
+			</div>
 		</div>
-	</div>
-</div>
+		<script>
+			$(document).ready(function(){
+			    $("#get_value").on('click', function () {
+					console.log( $("#id_name").val() );
+					var name = $("#id_name").val();
+					$.ajax({
+						url: '/loan_admin/ajax/get_feature_values/',
+						data: {
+							'name': name
+						},
+						dataType: 'json',
+						success: function (data) {
+							$("#id_1 select").val(data.value);
+							$("#id_2 select").val(data.data_type);
+							$("#id_3 select").val(data.category);
+							console.log(data.status);
+							$("#customCheck1").prop("checked", data.status);
+						}
+					});
+			    });
+			});
+		</script>
+	</body>
+</html>

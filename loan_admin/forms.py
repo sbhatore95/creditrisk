@@ -79,8 +79,10 @@ class ConfigurationForm(forms.ModelForm):
 class UploadFileForm(forms.ModelForm):
 	file = forms.FileField(widget=forms.FileInput(attrs={'class': 'custom-file-input', 
         'id': "customFile", 'name': 'filename'}))
-	columns = forms.CharField( widget=forms.Textarea )
-	nominal_features = forms.CharField( widget=forms.Textarea )
+	columns = forms.CharField( widget=forms.Textarea(attrs={'class': 'form-control', 
+		'aria-label': "Columns (separated by comma)"}) )
+	nominal_features = forms.CharField( widget=forms.Textarea(attrs={'class': 'form-control', 
+		'aria-label': "Nominal Features (separated by comma)"}) )
 	target = forms.CharField(label="Target feature", 
 		widget=forms.TextInput(attrs={'class': 'form-control'}))
 	

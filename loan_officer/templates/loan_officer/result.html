@@ -12,28 +12,34 @@
 			<a href="{% url 'loan_officer:index' %}"> Scorecard </a>&nbsp &nbsp &nbsp
 			<a href="{% url 'loan_officer:uploadCSV' %}"> Upload Dataset </a>
 			<h1> Results </h1>
-			<table class="table table-bordered table-responsive">				
-				{% if not_ready %}
-					<tr><td>Model(s) is/are not ready.</td></tr>
+			<div class="jumbotron">
+				<div class="table-responsive">
+					<table class="table table-bordered">
+						<tbody>				
+							{% if not_ready %}
+								<tr><td>Model(s) is/are not ready.</td></tr>
+							{% endif %}
+							{% if rule %}
+								<tr><td>Rule Based</td><td><b>Score: </b></td><td>{{ rule }}</td></tr>
+							{% endif %}
+							{% if stat_approve %}				
+							<tr><td rowspan="2">Statistical Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ stat_approve }}</td></tr>
+							<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ stat_napprove }}</td></tr>
+							{% endif %}
+							{% if ml_approve %}
+							<tr><td rowspan="2">ML Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ ml_approve }}</td></tr>
+							<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ ml_napprove }}</td></tr>
+							{% endif %}
+						</tbody>
+					</table>
+				</div>
+				<br>
+				{% if statandml %}
+					Statistical model wins in performance measure.
+				{% else %}
+					ML model wins in performance measure.
 				{% endif %}
-				{% if rule %}
-					<tr><td>Rule Based</td><td><b>Score: </b></td><td>{{ rule }}</td></tr>
-				{% endif %}
-				{% if stat_approve %}				
-				<tr><td rowspan="2">Statistical Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ stat_approve }}</td></tr>
-				<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ stat_napprove }}</td></tr>
-				{% endif %}
-				{% if ml_approve %}
-				<tr><td rowspan="2">ML Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ ml_approve }}</td></tr>
-				<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ ml_napprove }}</td></tr>
-				{% endif %}
-			</table>
-			<br>
-			{% if statandml %}
-				Statistical model wins in performance measure.
-			{% else %}
-				ML model wins in performance measure.
-			{% endif %}			
+			</div>		
 		</div>
 	</div>
 </div>
