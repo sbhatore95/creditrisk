@@ -115,7 +115,7 @@ class Trainer(metaclass=ABCMeta):
 
 	def generate_metrics(self):
 		Y_pred = self.trained_model.predict(self.X_test)
-		wt_ac, ac = super(KNN, self).weighted_accuracy(self.Y_test, Y_pred)
+		wt_ac, ac = self.weighted_accuracy(self.Y_test, Y_pred)
 		self.acc = ac
 		return ac
 

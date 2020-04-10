@@ -9,14 +9,17 @@ from .project import *
 import sys
 from .predict import *
 from .models import SavedState
+from login.models import Sessions
+# from notifications import notify
 
 def index(request):
 	form = MyForm()
 	ins = SavedState.objects.all().first()
+	session = Sessions.objects.all().first()
 	status_bg = False
 	if(ins is not None):
 		status_bg = ins.stat == "true"
-	context = {'form':form, 'status_bg':status_bg}
+	context = {'form':form, 'status_bg':status_bg, 'session': session.user}
 	return render(request, 'loan_officer/index.html', context)
 
 def result(request):
@@ -24,6 +27,7 @@ def result(request):
 	rule = request.GET.get('rule_based')
 	stat = request.GET.get('statistical_based')
 	ml = request.GET.get('ML_based')
+	session = Sessions.objects.all().first()
 	if(SavedState.objects.all().first() == None):
 		m = SavedState(stat="false", ml="false")
 		m.save()
@@ -42,13 +46,18 @@ def result(request):
 		ml_approve = ans[2].split(',')[0]
 		ml_napprove = ans[2].split(',')[1]
 	context = {'rule': ans[0], 'stat_approve': stat_approve, 'stat_napprove': stat_napprove, 
-	'ml_approve': ml_approve, 'ml_napprove': ml_napprove, 'statandml':ans[3]}
+	'ml_approve': ml_approve, 'ml_napprove': ml_napprove, 'statandml':ans[3], 'session':session.user}
 	return render(request, 'loan_officer/result.html', context)
 
 def uploadCSV(request):
 	add = request.GET.get('add')
+	session = Sessions.objects.all().first()
 	form = FileUploadForm()
-	context = {'form':form, 'add':add}
+	# notify.send(form, verb='was saved')
+	if(add):
+		messages.info(request, 'Record created successfully')
+	else:
+		context = {'form':form, 'session': session.user}
 	return render(request, 'loan_officer/uploadCSV.html', context)
 
 @require_POST

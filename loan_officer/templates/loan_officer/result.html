@@ -1,45 +1,84 @@
 {% load crispy_forms_tags %}
-<head>
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-</head>
-<div class="container">
-	<div class="row justify-content-center">
-    	<div class="col-8">
-			<img src="/media/credit_risk/logo.jpg"> &nbsp &nbsp &nbsp
-			<a href="{% url 'login:index' %}"> Home </a>&nbsp&nbsp&nbsp
-			<a href="{% url 'loan_officer:index' %}"> Scorecard </a>&nbsp &nbsp &nbsp
-			<a href="{% url 'loan_officer:uploadCSV' %}"> Upload Dataset </a>
-			<h1> Results </h1>
-			<div class="jumbotron">
-				<div class="table-responsive">
-					<table class="table table-bordered">
-						<tbody>				
-							{% if not_ready %}
-								<tr><td>Model(s) is/are not ready.</td></tr>
-							{% endif %}
-							{% if rule %}
-								<tr><td>Rule Based</td><td><b>Score: </b></td><td>{{ rule }}</td></tr>
-							{% endif %}
-							{% if stat_approve %}				
-							<tr><td rowspan="2">Statistical Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ stat_approve }}</td></tr>
-							<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ stat_napprove }}</td></tr>
-							{% endif %}
-							{% if ml_approve %}
-							<tr><td rowspan="2">ML Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ ml_approve }}</td></tr>
-							<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ ml_napprove }}</td></tr>
-							{% endif %}
-						</tbody>
-					</table>
-				</div>
-				<br>
-				{% if statandml %}
-					Statistical model wins in performance measure.
-				{% else %}
-					ML model wins in performance measure.
-				{% endif %}
-			</div>		
-		</div>
-	</div>
-</div>
+{% load static %}
+{% if session == "2" %}
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8">
+		    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+			<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
+		</head>
+		<body>
+			<div class="container">
+				<nav class="vertical-nav bg-white" id="sidebar">
+					 <div class="media d-flex align-items-center">
+					 	<img src="/media/credit_risk/logo.jpg" alt="..." class="">
+					 </div>
+					<ul class="nav flex-column bg-white">
+						<li class="nav-item">
+							<a href="{% url 'login:index' %}" class="nav-link text-dark font-italic">
+	            				Home
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_officer:index' %}" class="nav-link text-dark font-italic">
+	            				Scorecard
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_officer:uploadCSV' %}" class="nav-link text-dark font-italic">
+	            				Upload Dataset
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'login:logout' %}" class="nav-link text-dark font-italic" id="link">
+	            				Logout
+	        				</a>
+						</li>
+					</ul>
+				</nav>
+				<div class="page-content" id="content">
+					<h1> Results </h1>
+				<div class="jumbotron">
+					<div class="table-responsive">
+						<table class="table table-bordered">
+							<tbody>				
+								{% if not_ready %}
+									<tr><td>Model(s) is/are not ready.</td></tr>
+								{% endif %}
+								{% if rule %}
+									<tr><td>Rule Based</td><td><b>Score: </b></td><td>{{ rule }}</td></tr>
+								{% endif %}
+								{% if stat_approve %}				
+								<tr><td rowspan="2">Statistical Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ stat_approve }}</td></tr>
+								<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ stat_napprove }}</td></tr>
+								{% endif %}
+								{% if ml_approve %}
+								<tr><td rowspan="2">ML Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ ml_approve }}</td></tr>
+								<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ ml_napprove }}</td></tr>
+								{% endif %}
+							</tbody>
+						</table>
+					</div>
+					<br>
+					{% if statandml %}
+						Statistical model wins in performance measure.
+					{% else %}
+						ML model wins in performance measure.
+					{% endif %}
+				</div>		
+			<script>		
+				$(".custom-file-input").on("change", function() {
+				  var fileName = $(this).val().split("\\").pop();
+				  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+				});
+			</script>
+		</body>
+	</html>
+{% else %}
+	Page not found.
+{% endif %}

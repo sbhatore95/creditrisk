@@ -13,26 +13,25 @@ from .forms import UploadFileForm, CriteriaForm, SetScaleForm
 import sys
 from django.contrib import messages
 from django.http import JsonResponse
+from login.models import Sessions
 # Create your views here.
 
 def index(request):
 	add = request.GET.get('add')
 	form = FeatureForm()
+	session = Sessions.objects.all().first()
 	if(add == 'ok1'):
 		messages.info(request, 'Record created successfully')
-		context = {'form':form, 'add':add}
-	else:
-		context = {'form':form}
+	context = {'form':form, 'session':session.user}
 	return render(request, 'loan_admin/index.html', context)
 
 def configuration(request):
 	add = request.GET.get('add1')
 	form = ConfigurationForm()
+	session = Sessions.objects.all().first()
 	if(add == 'ok2'):
 		messages.info(request, 'Record created successfully')
-		context = {'form':form, 'add':add}
-	else:
-		context = {'form':form}
+	context = {'form':form, 'session':session.user}
 	return render(request, 'loan_admin/configuration.html', context)
 
 def get_feature_values(request):
@@ -81,11 +80,10 @@ def get_configuration_values(request):
 def criteria(request):
 	add = request.GET.get('add2')
 	form = CriteriaForm()
+	session = Sessions.objects.all().first()
 	if(add == 'ok3'):
 		messages.info(request, 'Record created successfully')
-		context = {'form':form, 'add':add}
-	else:
-		context = {'form':form}
+	context = {'form':form, 'add':add, 'session':session.user}
 	return render(request, 'loan_admin/criteria.html', context)
 
 @require_POST
@@ -143,11 +141,10 @@ def get_criteria_values(request):
 def set_scale(request):
 	add = request.GET.get('add4')
 	form = SetScaleForm()
+	session = Sessions.objects.all().first()
 	if(add == 'ok5'):
 		messages.info(request, 'Record created successfully')
-		context = {'form':form, 'add':add}
-	else:
-		context = {'form':form}
+	context = {'form':form, 'session':session.user}
 	return render(request, 'loan_admin/set_scale.html', context)
 
 def addScale(request):
@@ -171,11 +168,10 @@ def get_scale_values(request):
 def uploadCSV(request):
 	add = request.GET.get('add3')
 	form = UploadFileForm()
+	session = Sessions.objects.all().first()
 	if(add == 'ok4'):
 		messages.info(request, 'Record created successfully')
-		context = {'form':form, 'add':add}
-	else:
-		context = {'form':form}
+	context = {'form':form, 'add':add, 'session':session.user}
 	return render(request, 'loan_admin/uploadCSV.html', context)
 
 @require_POST

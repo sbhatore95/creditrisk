@@ -29,8 +29,23 @@
 			</nav>
 			<div class="page-content" id="content">
 				<h1> Login </h1>
-				<a href="{% url 'loan_officer:index' %}"> Loan Officer </a><br>
-				<a href="{% url 'loan_admin:index' %}"> Loan Administrator </a>
+				{% if messages %}
+				<div class="alert alert-danger" role="alert">
+				    {% for message in messages %}
+				    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+				    {% endfor %}
+				</div>
+				{% endif %}
+				<form action="{% url 'login:authenticate_and_redirect' %}" method="POST" role="form">
+					{% csrf_token %}
+					{{ form.name.label }}&nbsp
+					{{ form.name }}
+					<br>
+					{{ form.password.label }}
+					{{ form.password }}
+					<br>
+					<input type="submit" value="Submit" class="btn btn-primary" id="submit">
+				</form>
 			</div>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -43,6 +58,17 @@
     				$('#sidebar, #content').toggleClass('active');
   				});
 			});
+			// $(document).ready(function(){
+			//     $("#submit").on('click', function () {
+			// 		$.ajax({
+			// 			url: '/login/ajax/save_user/',
+			// 			dataType: 'json',
+			// 			success: function (data) {
+			// 				$("#alert").val("")
+			// 			}
+			// 		});
+			//     });
+			// });
 		</script>
 	</body>
 </html>

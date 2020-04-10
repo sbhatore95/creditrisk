@@ -24,11 +24,6 @@
         				</a>
 					</li>
 					<li class="nav-item">
-						<a href="{% url 'login:login' %}" class="nav-link text-dark font-italic">
-            				Login
-        				</a>
-					</li>
-					<li class="nav-item">
 						<a href="{% url 'loan_admin:index' %}" class="nav-link text-dark font-italic bg-light">
             				Add Feature
         				</a>
@@ -52,6 +47,11 @@
 						<a href="{% url 'loan_admin:uploadCSV' %}" class="nav-link text-dark font-italic">
             				Upload Dataset
         				</a>
+					</li>
+					<li class="nav-item">
+						<a href="{% url 'login:logout' %}" class="nav-link text-dark font-italic" id="link">
+	        				Logout
+	    				</a>
 					</li>
 				</ul>
 			</nav>

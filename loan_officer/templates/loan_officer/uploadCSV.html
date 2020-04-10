@@ -1,62 +1,73 @@
 {% load crispy_forms_tags %}
 {% load static %}
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
-	</head>
-	<body>
-		<div class="container">
-			<nav class="vertical-nav bg-white" id="sidebar">
-				 <div class="media d-flex align-items-center">
-				 	<img src="/media/credit_risk/logo.jpg" alt="..." class="">
-				 </div>
-				<ul class="nav flex-column bg-white">
-					<li class="nav-item">
-						<a href="{% url 'login:index' %}" class="nav-link text-dark font-italic">
-            				Home
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'login:login' %}" class="nav-link text-dark font-italic">
-            				Login
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_officer:index' %}" class="nav-link text-dark font-italic bg-light">
-            				Scorecard
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_officer:uploadCSV' %}" class="nav-link text-dark font-italic">
-            				Upload Dataset
-        				</a>
-					</li>
-				</ul>
-			</nav>
-			<div class="page-content" id="content">
-				<h1> Customer Dataset Upload </h1>
-				<form action="{% url 'loan_officer:add' %}" method="POST" enctype= multipart/form-data>
-					{% csrf_token %}
-					<div class="custom-file">
-						{{ form.file }}
-						<label class="custom-file-label" for="customFile">Choose file</label>
-					</div><br><br>
-				    <input type="submit" value="Submit" class="btn btn-primary">
-				</form>
+{% if session == "2" %}
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8">
+		    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+			<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
+		</head>
+		<body>
+			<div class="container">
+				<nav class="vertical-nav bg-white" id="sidebar">
+					 <div class="media d-flex align-items-center">
+					 	<img src="/media/credit_risk/logo.jpg" alt="..." class="">
+					 </div>
+					<ul class="nav flex-column bg-white">
+						<li class="nav-item">
+							<a href="{% url 'login:index' %}" class="nav-link text-dark font-italic">
+	            				Home
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_officer:index' %}" class="nav-link text-dark font-italic">
+	            				Scorecard
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_officer:uploadCSV' %}" class="nav-link text-dark font-italic bg-light">
+	            				Upload Dataset
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'login:logout' %}" class="nav-link text-dark font-italic" id="link">
+	            				Logout
+	        				</a>
+						</li>
+					</ul>
+				</nav>
+				<div class="page-content" id="content">
+					<h1> Customer Dataset Upload </h1>
+					{% if messages %}
+					<div class="alert alert-success" role="alert">
+					    {% for message in messages %}
+					    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					    {% endfor %}
+					</div>
+					{% endif %}
+					<form action="{% url 'loan_officer:add' %}" method="POST" enctype= multipart/form-data>
+						{% csrf_token %}
+						<div class="custom-file">
+							{{ form.file }}
+							<label class="custom-file-label" for="customFile">Choose file</label>
+						</div><br><br>
+					    <input type="submit" value="Submit" class="btn btn-primary">
+					</form>
+				</div>
 			</div>
-		</div>
-		<script>		
-			$(".custom-file-input").on("change", function() {
-			  var fileName = $(this).val().split("\\").pop();
-			  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-			});
-		</script>
-	</body>
-</html>
+			<script>		
+				$(".custom-file-input").on("change", function() {
+				  var fileName = $(this).val().split("\\").pop();
+				  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+				});
+			</script>
+		</body>
+	</html>
+{% else %}
+	Page not found.
+{% endif %}
