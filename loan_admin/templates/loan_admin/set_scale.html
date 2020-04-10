@@ -1,104 +1,108 @@
 {% load crispy_forms_tags %}
 {% load static %}
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
-		<style>
-			#red, #green {
-				width: 4rem;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="container">
-			<nav class="vertical-nav bg-white" id="sidebar">
-				 <div class="media d-flex align-items-center">
-				 	<img src="/media/credit_risk/logo.jpg" alt="..." class="">
-				 </div>
-				<ul class="nav flex-column bg-white">
-					<li class="nav-item">
-						<a href="{% url 'login:index' %}" class="nav-link text-dark font-italic">
-            				Home
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_admin:index' %}" class="nav-link text-dark font-italic">
-            				Add Feature
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_admin:configuration' %}" class="nav-link text-dark font-italic">
-            				Configuration
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_admin:criteria' %}" class="nav-link text-dark font-italic">
-            				Criteria
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_admin:set_scale' %}" class="nav-link text-dark font-italic bg-light">
-            				Set Scale
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_admin:uploadCSV' %}" class="nav-link text-dark font-italic">
-            				Upload Dataset
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'login:logout' %}" class="nav-link text-dark font-italic" id="link">
-	        				Logout
-	    				</a>
-					</li>
-				</ul>
-			</nav>
-			<div class="page-content" id="content">
-				<h1> Set Scale </h1>
-				<br>
-				{% if messages %}
-				<div class="alert alert-success" role="alert">
-				    {% for message in messages %}
-				    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-				    {% endfor %}
-				</div>
-				{% endif %}
-				<form action="{% url 'loan_admin:set' %}" method="POST" role="form">
-					{% csrf_token %}
-					<table>
-						<tr>
-							<td>{{ form.red.label }}</td> <td>0 - </td><td>{{ form.red }}</td>
-						</tr>
-						<tr>
-							<td>{{ form.green.label }}</td> <td>{{ form.green }}</td><td> - 10</td>
-						</tr>
-					</table>
+{% if session == "1" %}
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8">
+		    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+			<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
+			<style>
+				#red, #green {
+					width: 4rem;
+				}
+			</style>
+		</head>
+		<body>
+			<div class="container">
+				<nav class="vertical-nav bg-white" id="sidebar">
+					 <div class="media d-flex align-items-center">
+					 	<img src="/media/credit_risk/logo.jpg" alt="..." class="">
+					 </div>
+					<ul class="nav flex-column bg-white">
+						<li class="nav-item">
+							<a href="{% url 'login:index' %}" class="nav-link text-dark font-italic">
+	            				Home
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_admin:index' %}" class="nav-link text-dark font-italic">
+	            				Add Feature
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_admin:configuration' %}" class="nav-link text-dark font-italic">
+	            				Configuration
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_admin:criteria' %}" class="nav-link text-dark font-italic">
+	            				Criteria
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_admin:set_scale' %}" class="nav-link text-dark font-italic bg-light">
+	            				Set Scale
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_admin:uploadCSV' %}" class="nav-link text-dark font-italic">
+	            				Upload Dataset
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'login:logout' %}" class="nav-link text-dark font-italic" id="link">
+		        				Logout
+		    				</a>
+						</li>
+					</ul>
+				</nav>
+				<div class="page-content" id="content">
+					<h1> Set Scale </h1>
 					<br>
-					<input type="button" class="btn btn-success" value="Get" id="get_value">
-				    <input type="submit" value="Submit" class="btn btn-primary">
-				</form>
+					{% if messages %}
+					<div class="alert alert-success" role="alert">
+					    {% for message in messages %}
+					    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					    {% endfor %}
+					</div>
+					{% endif %}
+					<form action="{% url 'loan_admin:set' %}" method="POST" role="form">
+						{% csrf_token %}
+						<table>
+							<tr>
+								<td>{{ form.red.label }}</td> <td>0 - </td><td>{{ form.red }}</td>
+							</tr>
+							<tr>
+								<td>{{ form.green.label }}</td> <td>{{ form.green }}</td><td> - 10</td>
+							</tr>
+						</table>
+						<br>
+						<input type="button" class="btn btn-success" value="Get" id="get_value">
+					    <input type="submit" value="Submit" class="btn btn-primary">
+					</form>
+				</div>
 			</div>
-		</div>
-		<script>
-			$(document).ready(function(){
-			    $("#get_value").on('click', function () {
-					$.ajax({
-						url: '/loan_admin/ajax/get_scale_values/',
-						dataType: 'json',
-						success: function (data) {
-							$("#red").val(data.red)
-							$("#green").val(data.green)
-						}
-					});
-			    });
-			});
-		</script>
-	</body>
-</html>
+			<script>
+				$(document).ready(function(){
+				    $("#get_value").on('click', function () {
+						$.ajax({
+							url: '/loan_admin/ajax/get_scale_values/',
+							dataType: 'json',
+							success: function (data) {
+								$("#red").val(data.red)
+								$("#green").val(data.green)
+							}
+						});
+				    });
+				});
+			</script>
+		</body>
+	</html>
+{% else %}
+	Page not found.
+{% endif %}

@@ -1,187 +1,191 @@
 {% load crispy_forms_tags %}
 {% load static %}
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
-	</head>
-	<body>
-		<div class="container">
-			<nav class="vertical-nav bg-white" id="sidebar">
-				 <div class="media d-flex align-items-center">
-				 	<img src="/media/credit_risk/logo.jpg" alt="..." class="">
-				 </div>
-				<ul class="nav flex-column bg-white">
-					<li class="nav-item">
-						<a href="{% url 'login:index' %}" class="nav-link text-dark font-italic">
-            				Home
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_admin:index' %}" class="nav-link text-dark font-italic">
-            				Add Feature
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_admin:configuration' %}" class="nav-link text-dark font-italic">
-            				Configuration
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_admin:criteria' %}" class="nav-link text-dark font-italic bg-light">
-            				Criteria
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_admin:set_scale' %}" class="nav-link text-dark font-italic">
-            				Set Scale
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'loan_admin:uploadCSV' %}" class="nav-link text-dark font-italic">
-            				Upload Dataset
-        				</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'login:logout' %}" class="nav-link text-dark font-italic" id="link">
-	        				Logout
-	    				</a>
-					</li>
-				</ul>
-			</nav>
-			<div class="page-content" id="content">
-				<h1> Criteria </h1>
-				<br>
-				{% if messages %}
-				<div class="alert alert-success" role="alert">
-				    {% for message in messages %}
-				    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-				    {% endfor %}
+{% if session == "1" %}
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8">
+		    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+			<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
+		</head>
+		<body>
+			<div class="container">
+				<nav class="vertical-nav bg-white" id="sidebar">
+					 <div class="media d-flex align-items-center">
+					 	<img src="/media/credit_risk/logo.jpg" alt="..." class="">
+					 </div>
+					<ul class="nav flex-column bg-white">
+						<li class="nav-item">
+							<a href="{% url 'login:index' %}" class="nav-link text-dark font-italic">
+	            				Home
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_admin:index' %}" class="nav-link text-dark font-italic">
+	            				Add Feature
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_admin:configuration' %}" class="nav-link text-dark font-italic">
+	            				Configuration
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_admin:criteria' %}" class="nav-link text-dark font-italic bg-light">
+	            				Criteria
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_admin:set_scale' %}" class="nav-link text-dark font-italic">
+	            				Set Scale
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'loan_admin:uploadCSV' %}" class="nav-link text-dark font-italic">
+	            				Upload Dataset
+	        				</a>
+						</li>
+						<li class="nav-item">
+							<a href="{% url 'login:logout' %}" class="nav-link text-dark font-italic" id="link">
+		        				Logout
+		    				</a>
+						</li>
+					</ul>
+				</nav>
+				<div class="page-content" id="content">
+					<h1> Criteria </h1>
+					<br>
+					{% if messages %}
+					<div class="alert alert-success" role="alert">
+					    {% for message in messages %}
+					    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					    {% endfor %}
+					</div>
+					{% endif %}
+					<form action="{% url 'loan_admin:cri' %}" method="POST" role="form" class=".interest-list-new">
+						{% csrf_token %}
+						<b>{{ form.feature.label }}</b>
+						{{ form.feature }}
+						<br><br>
+						<b>{{ form.category.label }}</b>
+						{{ form.category }}
+						<br><br>
+						<b>{{ form.product.label }}</b>
+						{{ form.product }}
+						<br><br>
+						<b><label>Data Source*: &nbsp &nbsp</label></b>
+						{% for radio in form.data_source %}
+						    <label class="radio-inline" for="{{ radio.id_for_label }}">
+						        <span class="radio">{{ radio.tag }}</span>
+						        {{ radio.choice_label }}
+						    </label>
+						{% endfor %}
+						<br><br>
+						<b>{{ form.api.label }}</b>
+						{{ form.api }}
+						<br>
+						<b>{{ form.key.label }}</b>
+						{{ form.key }}
+						<br>
+						<table>
+							<tr id="new_row">
+								<td>
+									<b>{{ form.entry_1.label }}</b>
+									{{ form.entry_1 }}
+								</td>
+								<td>
+									<b>{{ form.score_1.label }}</b>
+									{{ form.score_1 }}
+								</td>
+							</tr>
+						</table>
+						<input type="button" class="new btn-default btn-sm" value="Add Row">
+						<br><br>
+						<input type="button" class="btn btn-success" value="Get" id="get_value">
+					    <input type="submit" value="Submit" class="btn btn-primary">
+					</form>
 				</div>
-				{% endif %}
-				<form action="{% url 'loan_admin:cri' %}" method="POST" role="form" class=".interest-list-new">
-					{% csrf_token %}
-					<b>{{ form.feature.label }}</b>
-					{{ form.feature }}
-					<br><br>
-					<b>{{ form.category.label }}</b>
-					{{ form.category }}
-					<br><br>
-					<b>{{ form.product.label }}</b>
-					{{ form.product }}
-					<br><br>
-					<b><label>Data Source*: &nbsp &nbsp</label></b>
-					{% for radio in form.data_source %}
-					    <label class="radio-inline" for="{{ radio.id_for_label }}">
-					        <span class="radio">{{ radio.tag }}</span>
-					        {{ radio.choice_label }}
-					    </label>
-					{% endfor %}
-					<br><br>
-					<b>{{ form.api.label }}</b>
-					{{ form.api }}
-					<br>
-					<b>{{ form.key.label }}</b>
-					{{ form.key }}
-					<br>
-					<table>
-						<tr id="new_row">
-							<td>
-								<b>{{ form.entry_1.label }}</b>
-								{{ form.entry_1 }}
-							</td>
-							<td>
-								<b>{{ form.score_1.label }}</b>
-								{{ form.score_1 }}
-							</td>
-						</tr>
-					</table>
-					<input type="button" class="new btn-default btn-sm" value="Add Row">
-					<br><br>
-					<input type="button" class="btn btn-success" value="Get" id="get_value">
-				    <input type="submit" value="Submit" class="btn btn-primary">
-				</form>
 			</div>
-		</div>
-		<script>
-			$(document).ready(function(){
-				$('.new').on('click', function() {
-	                let $this = $(document.getElementById('new_entry'))
-	                let $th = $(document.getElementById('new_score'))
-	                let name = $this.attr('name')
-				    let name1 = $th.attr('name')
-	                let n = parseInt(name.split('_')[1]) + 1
-				    let n1 = parseInt(name1.split('_')[1]) + 1
-	                name = 'entry_' + n
-				    name1 = 'score_' + n1
-	                $("<tr id='new_row'><td><b><label>Criteria "+n+"</label></b>"+
-	                "<input name='"+name+"' id='new_entry' class='form-control'></td><td><b><label>Score "+n1+"</label></b>"+
-	                "<input name='"+name1+"' id='new_score' class='textinput textInput form-control'></td></tr>").insertAfter("#new_row")
-	                $this.off('input', arguments.callee)
-				    $this.removeAttr('id')
-				    $th.removeAttr('id')
-				    $("#new_row").removeAttr('id')
-				});
+			<script>
+				$(document).ready(function(){
+					$('.new').on('click', function() {
+		                let $this = $(document.getElementById('new_entry'))
+		                let $th = $(document.getElementById('new_score'))
+		                let name = $this.attr('name')
+					    let name1 = $th.attr('name')
+		                let n = parseInt(name.split('_')[1]) + 1
+					    let n1 = parseInt(name1.split('_')[1]) + 1
+		                name = 'entry_' + n
+					    name1 = 'score_' + n1
+		                $("<tr id='new_row'><td><b><label>Criteria "+n+"</label></b>"+
+		                "<input name='"+name+"' id='new_entry' class='form-control'></td><td><b><label>Score "+n1+"</label></b>"+
+		                "<input name='"+name1+"' id='new_score' class='textinput textInput form-control'></td></tr>").insertAfter("#new_row")
+		                $this.off('input', arguments.callee)
+					    $this.removeAttr('id')
+					    $th.removeAttr('id')
+					    $("#new_row").removeAttr('id')
+					});
 
-			    $("#get_value").on('click', function () {
-					var feature = $("#id_feature").val();
-					var category = $("#id_category").val();
-					var product = $("#id_product").val();
-					$.ajax({
-						url: '/loan_admin/ajax/get_criteria_values/',
-						data: {
-							'feature': feature,
-							'category': category,
-							'product': product
-						},
-						dataType: 'json',
-						success: function (data) {
-							console.log(data.data_source.toString())
-							$("#id_data_source_" + parseInt(data.data_source-1).toString()).attr('checked', true);
-							$("#id_api").val(data.api);
-							$("#id_key").val(data.key);
-							console.log(data.entries);
-							if(data.entries != ""){
-								var entry_arr = data.entries.split(',');
-								var score_arr = data.scores.split(',');
-								$("#new_entry").val(entry_arr[0]);
-								$("#new_score").val(score_arr[0]);
-								$("#new_entry").attr("name", "entry_1")
-								$("#new_score").attr("name", "score_1")
-								entry_arr.shift()
-								score_arr.shift()
-								var i;
-								for(i=0;i<entry_arr.length-1;i++){
-									console.log(entry_arr[i]);
+				    $("#get_value").on('click', function () {
+						var feature = $("#id_feature").val();
+						var category = $("#id_category").val();
+						var product = $("#id_product").val();
+						$.ajax({
+							url: '/loan_admin/ajax/get_criteria_values/',
+							data: {
+								'feature': feature,
+								'category': category,
+								'product': product
+							},
+							dataType: 'json',
+							success: function (data) {
+								console.log(data.data_source.toString())
+								$("#id_data_source_" + parseInt(data.data_source-1).toString()).attr('checked', true);
+								$("#id_api").val(data.api);
+								$("#id_key").val(data.key);
+								console.log(data.entries);
+								if(data.entries != ""){
+									var entry_arr = data.entries.split(',');
+									var score_arr = data.scores.split(',');
+									$("#new_entry").val(entry_arr[0]);
+									$("#new_score").val(score_arr[0]);
+									$("#new_entry").attr("name", "entry_1")
+									$("#new_score").attr("name", "score_1")
+									entry_arr.shift()
+									score_arr.shift()
+									var i;
+									for(i=0;i<entry_arr.length-1;i++){
+										console.log(entry_arr[i]);
+										let n = i + 2;
+										let n1 = n;
+						                let name = 'entry_' + n
+									    let name1 = 'score_' + n1
+						                $("<tr id='new_row'><td><b><label>Criteria "+n+"</label></b>"+
+						                "<input name='"+name+"' id='entry' class='form-control' value='"+entry_arr[i]+"'></td><td><b><label>Score "+n1+"</label></b>"+
+						                "<input name='"+name1+"' id='score' class='textinput textInput form-control' value='"+score_arr[i]+"'></td></tr>").insertAfter("#new_row");
+						                $("#new_row").removeAttr('id');               
+									}
+									console.log(entry_arr);
 									let n = i + 2;
 									let n1 = n;
-					                let name = 'entry_' + n
-								    let name1 = 'score_' + n1
-					                $("<tr id='new_row'><td><b><label>Criteria "+n+"</label></b>"+
-					                "<input name='"+name+"' id='entry' class='form-control' value='"+entry_arr[i]+"'></td><td><b><label>Score "+n1+"</label></b>"+
-					                "<input name='"+name1+"' id='score' class='textinput textInput form-control' value='"+score_arr[i]+"'></td></tr>").insertAfter("#new_row");
-					                $("#new_row").removeAttr('id');               
+					                let name = 'entry_' + n;
+								    let name1 = 'score_' + n1;
+									$("<tr id='new_row'><td><b><label>Criteria "+n+"</label></b>"+
+						                "<input name='"+name+"' id='new_entry' class='form-control' value='"+entry_arr[i]+"'></td><td><b><label>Score "+n1+"</label></b>"+
+						                "<input name='"+name1+"' id='new_score' class='textinput textInput form-control' value='"+score_arr[i]+"'></td></tr>").insertAfter("#new_row");
 								}
-								console.log(entry_arr);
-								let n = i + 2;
-								let n1 = n;
-				                let name = 'entry_' + n;
-							    let name1 = 'score_' + n1;
-								$("<tr id='new_row'><td><b><label>Criteria "+n+"</label></b>"+
-					                "<input name='"+name+"' id='new_entry' class='form-control' value='"+entry_arr[i]+"'></td><td><b><label>Score "+n1+"</label></b>"+
-					                "<input name='"+name1+"' id='new_score' class='textinput textInput form-control' value='"+score_arr[i]+"'></td></tr>").insertAfter("#new_row");
 							}
-						}
 
+						});
 					});
 				});
-			});
-		</script>
-	</body>
-</html>
+			</script>
+		</body>
+	</html>
+{% else %}
+	Page not found.
+{% endif %}

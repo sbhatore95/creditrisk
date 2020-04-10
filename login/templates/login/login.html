@@ -38,7 +38,6 @@
 				{% endif %}
 				<form action="{% url 'login:authenticate_and_redirect' %}" method="POST" role="form">
 					{% csrf_token %}
-					{{ form.name.label }}&nbsp
 					{{ form.name }}
 					<br>
 					{{ form.password.label }}

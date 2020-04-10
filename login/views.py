@@ -14,6 +14,11 @@ def index(request):
 def login(request):
 	add = request.GET.get('add')
 	form = UserForm()
+	session = Sessions.objects.all().first()
+	if(session.user == "1"):
+		return redirect('loan_admin:index')
+	if(session.user == "2"):
+		return redirect('loan_officer:index')
 	if(add):
 		messages.info(request, 'Password incorrect')
 	context = {'form':form}
