@@ -29,16 +29,16 @@ class FeatureForm(forms.ModelForm):
 		('Co', 'Company'),
 		('Cy', 'Country'),
 	]
-	name = forms.CharField(label="Feature*", required=True, 
+	name = forms.CharField(label="Feature", required=True, 
 		widget=forms.TextInput(attrs={'class': 'form-control'}))
-	value = forms.ChoiceField(label="Value*", choices=VALUE_CHOICES, required=True,
-		widget=forms.Select(attrs={'class': 'custom-select'}))
-	data_type = forms.ChoiceField(label="Data Type*", choices=DATA_CHOICES, required=True,
-		widget=forms.Select(attrs={'class': 'custom-select'}))
-	category = forms.ChoiceField(label="Category*", choices=CATEGORY_CHOICES, required=True,
-		widget=forms.Select(attrs={'class': 'custom-select'}))
+	value = forms.ChoiceField(label="Value Type", choices=VALUE_CHOICES, required=True,
+		widget=forms.Select(attrs={'class': 'mdb-select'}))
+	data_type = forms.ChoiceField(label="Data Type", choices=DATA_CHOICES, required=True,
+		widget=forms.Select(attrs={'class': 'mdb-select'}))
+	category = forms.ChoiceField(label="Category", choices=CATEGORY_CHOICES, required=True,
+		widget=forms.Select(attrs={'class': 'mdb-select'}))
 	status = forms.BooleanField(label="Status", required=False,
-        widget=forms.CheckboxInput(attrs={'class': 'custom-control-input', 'id': "customCheck1"}))
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input', 'id': "customCheck1"}))
 	class Meta:
 		model = Feature
 		fields = ['name', 'value', 'data_type', 'category', 'status']
@@ -56,9 +56,9 @@ class ConfigurationForm(forms.ModelForm):
 		('Ve', 'Vehicle'),
 	]
 	category = forms.ChoiceField(label="Category", choices=CATEGORY_CHOICES, required=True,
-		widget=forms.Select(attrs={'class': 'custom-select'}))
+		widget=forms.Select(attrs={'class': 'mdb-select'}))
 	product = forms.ChoiceField(label="Product", choices=PRODUCT_CHOICES, required=True,
-		widget=forms.Select(attrs={'class': 'custom-select'}))
+		widget=forms.Select(attrs={'class': 'mdb-select'}))
 	weightage = forms.FloatField(label="Weightage", 
 		widget=forms.TextInput(attrs={'class': 'form-control'}))
 	def __init__(self, *args, **kwargs):
@@ -70,7 +70,7 @@ class ConfigurationForm(forms.ModelForm):
 			b = (i['name'], i['name'])
 			FEATURE_CHOICES.append(b)
 		self.fields['feature'] = forms.ChoiceField(label="Feature", choices=FEATURE_CHOICES, 
-			required=True, widget=forms.Select(attrs={'class': 'custom-select'}))
+			required=True, widget=forms.Select(attrs={'class': 'mdb-select'}))
 	class Meta:
 		model = Configuration
 		fields = '__all__'
@@ -140,9 +140,9 @@ class CriteriaForm(forms.ModelForm):
 		('sq', 'SQL'),
 	]
 	category = forms.ChoiceField(label="Category",choices=CATEGORY_CHOICES, 
-		widget=forms.Select(attrs={'class': 'custom-select'}))
+		widget=forms.Select(attrs={'class': 'mdb-select'}))
 	product = forms.ChoiceField(label="Product",choices=PRODUCT_CHOICES,
-		widget=forms.Select(attrs={'class': 'custom-select'}))
+		widget=forms.Select(attrs={'class': 'mdb-select'}))
 	data_source = forms.ChoiceField(
         help_text="Select the data source",
         required=True,
@@ -165,7 +165,7 @@ class CriteriaForm(forms.ModelForm):
 			b = (field['name'], field['name'])
 			FEATURE_CHOICES.append(b)
 		self.fields['feature'] = forms.ChoiceField(choices=FEATURE_CHOICES, required=True, 
-			widget=forms.Select(attrs={'class': 'custom-select'}))
+			widget=forms.Select(attrs={'class': 'mdb-select'}))
 		criterias = CriteriaHelper.objects.filter(
 			criteria=self.instance
 		)

@@ -10,7 +10,25 @@
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+			<!-- Font Awesome -->
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+			<!-- Google Fonts -->
+			<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+			<!-- Bootstrap core CSS -->
+			<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+			<!-- Material Design Bootstrap -->
+			<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.15.0/css/mdb.min.css" rel="stylesheet">
+			<!-- JQuery -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<!-- Bootstrap tooltips -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+			<!-- Bootstrap core JavaScript -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+			<!-- MDB core JavaScript -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.15.0/js/mdb.min.js"></script>
+
 			<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
+			
 		</head>
 		<body>
 			<div class="container">
@@ -57,7 +75,64 @@
 					</ul>
 				</nav>
 				<div class="page-content" id="content">
-					<h1> Add Feature </h1>
+					<div class="card">
+
+					    <h5 class="card-header info-color white-text text-center py-4">
+					        <strong>Add Feature</strong>
+					    </h5>
+					    {% if messages %}
+						<div class="alert alert-success" role="alert">
+						    {% for message in messages %}
+						    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+						    {% endfor %}
+						</div>
+						{% endif %}
+					    <!--Card content-->
+					    <div class="card-body px-lg-5 pt-0">
+					    	
+					        <!-- Form -->
+					        <form class="" style="color: #757575;" action="{% url 'loan_admin:add' %}" method="POST" role="form">
+					        	{% csrf_token %}
+					        	<div class="md-form">
+							        {{ form.name }}
+							        <label for="1">{{ form.name.label }}</label>
+							    </div>
+					            <!-- Subject -->
+					            <div class="" id="id_1">
+					            	<label>{{ form.value.label }}</label>
+					            	{{ form.value }}
+
+					            </div>
+					            <div class="" id="id_2">
+					            	<label>{{ form.data_type.label }}</label>
+					            	{{ form.data_type }}
+
+					            </div>
+					            <div class="" id="id_3">
+					            	<label>{{ form.category.label }}</label>
+					            	{{ form.category }}
+
+					            </div>
+
+					            <!-- Copy -->
+					            <div class="form-check">
+					                {{ form.status }}
+					                <label class="form-check-label" for="customCheck1">
+					                	{{ form.status.label }}
+					                </label>
+					            </div>
+					            <input type="button" class="btn btn-default" value="Get" id="get_value">
+					            <!-- Send button -->
+					            <input class="btn btn-primary" value="submit" type="submit">
+
+					        </form>
+					        <!-- Form -->
+
+					    </div>
+
+					</div>
+					<!-- Material form contact -->
+					<!-- <h1>  </h1>
 					{% if messages %}
 					<div class="alert alert-success" role="alert">
 					    {% for message in messages %}
@@ -89,7 +164,7 @@
 						</div>
 						<input type="button" class="btn btn-success" value="Get" id="get_value">
 					    <input type="submit" value="Submit" class="btn btn-primary">
-					</form>
+					</form> -->
 				</div>
 			</div>
 			<script>
