@@ -55,14 +55,14 @@ def result_helper(ans):
 def get_results(rule, stat, ml, loan_id):
 	ans = [None, None, None, None]
 	if(rule):			
-		classifier = RuleBasedClassifier()
-		ans[0] = classifier.generate_score(loan_id)
+		classifier = RuleClassifier()
+		ans[0] = classifier.get_result(loan_id)
 	if(stat):
-		classifier = StatisticalBasedClassifier()
-		ans[1] = classifier.predict(loan_id)
+		classifier = StatisticalClassifier()
+		ans[1] = classifier.get_result(loan_id)
 	if(ml):
-		classifier = MLBasedClassifier()
-		ans[2] = classifier.predict(loan_id)
+		classifier = MLClassifier()
+		ans[2] = classifier.get_result(loan_id)
 	if(stat and ml):
 		ans[3] = (SavedState.objects.all().first().statandml == 'stat')
 	return ans

@@ -32,11 +32,11 @@ class RuleBasedStrategyAbstract(object):
 	__metaclass__ = abc.ABCMeta
 
 	@abc.abstractmethod
-	def generate_score(self, loan_id):
+	def get_result(self, loan_id):
 		"""Required Method"""
 
 class RuleBasedStrategy(RuleBasedStrategyAbstract):
-	def generate_score(self, loan_id):
+	def get_result(self, loan_id):
 		f = open(os.path.join(settings.MEDIA_ROOT, 'credit_risk/dataset/test_id_dataset.csv'), 'r')
 		line = f.readline()
 		array = line.split(',')
@@ -102,7 +102,7 @@ class DataBasedStrategyAbstract(object):
 		pass
 
 	@abc.abstractmethod
-	def predict(self, loan_id):
+	def get_result(self, loan_id):
 		pass
 
 	def parse(self, loan_id):
@@ -154,7 +154,7 @@ class StatisticalStrategy(DataBasedStrategyAbstract):
 		f.close()
 		self.model = reloaded
 
-	def predict(self, loan_id):
+	def get_result(self, loan_id):
 		self.load_model()
 		super(StatisticalStrategy, self).preprocess(np.array(self.parse(loan_id)))
 		result = self.model.trained_model.predict_proba(self.df)
@@ -167,35 +167,31 @@ class MLStrategy(DataBasedStrategyAbstract):
 		f.close()
 		self.model = reloaded
 
-	def predict(self, loan_id):
+	def get_result(self, loan_id):
 		self.load_model()
 		super(MLStrategy, self).preprocess(np.array(self.parse(loan_id)))
 		result = self.model.trained_model.predict_proba(self.df)
 		return (str(result[0][0])+ ","+str(result[0][1]))
 
-rs = RuleBasedStrategy()
-ss = StatisticalStrategy()
-ms = MLStrategy()
+rule_strategy = RuleBasedStrategy()
+stat_strategy = StatisticalStrategy()
+ml_strategy = MLStrategy()
 
 class Classifier(object):
-	def __init__(self, rule_strategy, data_strategy):
-		self._rule_strategy = rule_strategy
-		self._data_strategy = data_strategy
+	def __init__(self, strategy):
+		self._strategy = strategy
 
-	def generate_score(self, loan_id):
-		return self._rule_strategy.generate_score(loan_id)
+	def get_result(self, loan_id):
+		return self._strategy.get_result(loan_id)
 
-	def predict(self, loan_id):
-		return self._data_strategy.predict(loan_id)
-
-class RuleBasedClassifier(Classifier):
+class RuleClassifier(Classifier):
 	def __init__(self):
-		super(RuleBasedClassifier, self).__init__(rs, None)
+		super(RuleClassifier, self).__init__(rule_strategy)
 
-class StatisticalBasedClassifier(Classifier):
+class StatisticalClassifier(Classifier):
 	def __init__(self):
-		super(StatisticalBasedClassifier, self).__init__(None, ss)
+		super(StatisticalClassifier, self).__init__(stat_strategy)
 
-class MLBasedClassifier(Classifier):
+class MLClassifier(Classifier):
 	def __init__(self):
-		super(MLBasedClassifier, self).__init__(None, ms)
+		super(MLClassifier, self).__init__(ml_strategy)
