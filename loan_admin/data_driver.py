@@ -1,10 +1,28 @@
 from .trainer import *
-from .data_processor import *
 from loan_officer.models import SavedState
 
 class DataDriver:
 	def __init__(self):
 		pass
+
+	def process(read, write):
+		fw = open(write, 'w')
+		fr = open(read, 'r')
+		line = fr.readline()
+		count = 0
+		while(line != ""):
+			flag = 0
+			lout = ""
+			for i in range(0, len(line)):
+				if(flag == 1):
+					lout = lout + line[i]
+				if(line[i] == ','):
+					flag = 1
+			fw.write(lout)
+			line = fr.readline()
+			count = count + 1
+		fw.close()
+		fr.close()
 
 	def learn_and_save(columns, target, nominal, dataset):
 		tr_knn = KNN(columns, target, nominal, dataset)

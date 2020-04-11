@@ -15,23 +15,25 @@ from django.contrib import messages
 from django.http import JsonResponse
 from login.models import Sessions
 # Create your views here.
+def get_params(request, key):
+	add = request.GET.get(key)
+	session = Sessions.objects.all().first()
+	return {'add':add, 'session':session.user}
 
 def index(request):
-	add = request.GET.get('add')
-	form = FeatureForm()
-	session = Sessions.objects.all().first()
-	if(add == 'ok1'):
+	params = get_params(request, 'add')
+	if(params['add'] == 'ok1'):
 		messages.info(request, 'Record created successfully')
-	context = {'form':form, 'session':session.user}
+	form = FeatureForm()
+	context = {'form':form, 'session':params['session']}
 	return render(request, 'loan_admin/index.html', context)
 
 def configuration(request):
-	add = request.GET.get('add1')
+	params = get_params(request, 'add1')
 	form = ConfigurationForm()
-	session = Sessions.objects.all().first()
-	if(add == 'ok2'):
+	if(params['add'] == 'ok2'):
 		messages.info(request, 'Record created successfully')
-	context = {'form':form, 'session':session.user}
+	context = {'form':form, 'session':params['session']}
 	return render(request, 'loan_admin/configuration.html', context)
 
 def get_feature_values(request):
@@ -78,12 +80,11 @@ def get_configuration_values(request):
 	return JsonResponse(data)
 
 def criteria(request):
-	add = request.GET.get('add2')
+	params = get_params(request, 'add2')
 	form = CriteriaForm()
-	session = Sessions.objects.all().first()
-	if(add == 'ok3'):
+	if(params['add'] == 'ok3'):
 		messages.info(request, 'Record created successfully')
-	context = {'form':form, 'add':add, 'session':session.user}
+	context = {'form':form, 'session':params['session']}
 	return render(request, 'loan_admin/criteria.html', context)
 
 @require_POST
@@ -110,25 +111,7 @@ def get_criteria_values(request):
 	product = request.GET.get('product')
 	ins = Criteria.objects.filter(feature=feature).filter(category=category).filter(product=product).first()
 	crih_ins = CriteriaHelper.objects.filter(criteria=ins)
-	entries = ""
-	scores = ""
-	print(len(crih_ins))
-	if(len(crih_ins) != 0):
-		entries += crih_ins[0].entry
-		scores += str(crih_ins[0].score)
-		i = 0
-		for instance in crih_ins:
-			print(len(crih_ins))
-			if(i == 0):
-				i += 1
-				continue
-			print(entries)
-			entries += ','
-			scores += ','
-			entries += instance.entry
-			scores += str(instance.score)
-			print(entries)
-	print(entries)
+	entries, scores = get_criteria_values_helper(crih_ins)
 	data = {
 		'api': ins.api,
 		'data_source': ins.data_source,
@@ -138,13 +121,30 @@ def get_criteria_values(request):
 	}
 	return JsonResponse(data)
 
+def get_criteria_values_helper(crih_ins):
+	entries = ""
+	scores = ""
+	if(len(crih_ins) != 0):
+		entries += crih_ins[0].entry
+		scores += str(crih_ins[0].score)
+		i = 0
+		for instance in crih_ins:
+			print(len(crih_ins))
+			if(i == 0):
+				i += 1
+				continue
+			entries += ','
+			scores += ','
+			entries += instance.entry
+			scores += str(instance.score)
+	return entries, scores
+
 def set_scale(request):
-	add = request.GET.get('add4')
+	params = get_params(request, 'add4')
 	form = SetScaleForm()
-	session = Sessions.objects.all().first()
-	if(add == 'ok5'):
+	if(params['add'] == 'ok5'):
 		messages.info(request, 'Record created successfully')
-	context = {'form':form, 'session':session.user}
+	context = {'form':form, 'session':params['session']}
 	return render(request, 'loan_admin/set_scale.html', context)
 
 def addScale(request):
@@ -166,12 +166,12 @@ def get_scale_values(request):
 	return JsonResponse(data)
 
 def uploadCSV(request):
-	add = request.GET.get('add3')
+	params = get_params(request, 'add3')
 	form = UploadFileForm()
 	session = Sessions.objects.all().first()
-	if(add == 'ok4'):
+	if(params['add'] == 'ok4'):
 		messages.info(request, 'Record created successfully')
-	context = {'form':form, 'add':add, 'session':session.user}
+	context = {'form':form, 'session':params['session']}
 	return render(request, 'loan_admin/uploadCSV.html', context)
 
 @require_POST

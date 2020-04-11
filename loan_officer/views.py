@@ -5,59 +5,74 @@ from django.views.generic import FormView
 from django.urls import reverse
 from urllib.parse import urlencode
 from .forms import MyForm, FileUploadForm
-from .project import *
-import sys
 from .predict import *
 from .models import SavedState
 from login.models import Sessions
 # from notifications import notify
 
+def get_params(request, keys=[]):
+	ans = {}
+	for key in keys:
+		ans[key] = request.GET.get(key)
+	ans['session'] = Sessions.objects.all().first().user
+	ans['savedstate'] = SavedState.objects.all().first()
+	return ans
+
 def index(request):
 	form = MyForm()
-	ins = SavedState.objects.all().first()
-	session = Sessions.objects.all().first()
+	params = get_params(request)
 	status_bg = False
-	if(ins is not None):
-		status_bg = ins.stat == "true"
-	context = {'form':form, 'status_bg':status_bg, 'session': session.user}
+	if(params['savedstate'] is not None):
+		status_bg = (params['savedstate'].stat == "true")
+	context = {'form':form, 'status_bg':status_bg, 'session': params['session']}
 	return render(request, 'loan_officer/index.html', context)
 
 def result(request):
-	loan_id = request.GET.get('loan_id')
-	rule = request.GET.get('rule_based')
-	stat = request.GET.get('statistical_based')
-	ml = request.GET.get('ML_based')
-	session = Sessions.objects.all().first()
-	if(SavedState.objects.all().first() == None):
+	params = get_params(request, ['loan_id', 'rule_based', 'statistical_based', 'ML_based'])
+	if(params['savedstate'] == None):
 		m = SavedState(stat="false", ml="false")
 		m.save()
-	if((stat or ml) and SavedState.objects.all().first().stat == "false"):
+	if((params['statistical_based'] or params['ML_based']) and params['savedstate'].stat == "false"):
 		return render(request, 'loan_officer/result.html', {'not_ready':True})
-	classifier = Classifier(rule, stat, ml)
-	ans = classifier.doClassification(loan_id)
-	stat_approve = None
-	stat_napprove = None
-	ml_approve = None
-	ml_napprove = None
-	if(ans[1]):
-		stat_approve = ans[1].split(',')[0]
-		stat_napprove = ans[1].split(',')[1]
-	if(ans[2]):
-		ml_approve = ans[2].split(',')[0]
-		ml_napprove = ans[2].split(',')[1]
-	context = {'rule': ans[0], 'stat_approve': stat_approve, 'stat_napprove': stat_napprove, 
-	'ml_approve': ml_approve, 'ml_napprove': ml_napprove, 'statandml':ans[3], 'session':session.user}
+	ans = get_results(params['rule_based'], params['statistical_based'], params['ML_based'], params['loan_id'])
+	arr = []
+	arr.append(ans[0])
+	arr += result_helper(ans)
+	arr.append(ans[3])
+	context = {'result': arr, 'session':params['session']}
 	return render(request, 'loan_officer/result.html', context)
 
+def result_helper(ans):
+	arr = [None, None, None, None]
+	if(ans[1]):
+		arr[0] = ans[1].split(',')[0]
+		arr[1] = ans[1].split(',')[1]
+	if(ans[2]):
+		arr[2] = ans[2].split(',')[0]
+		arr[3] = ans[2].split(',')[1]
+	return arr
+
+def get_results(rule, stat, ml, loan_id):
+	ans = [None, None, None, None]
+	if(rule):			
+		classifier = RuleBasedClassifier()
+		ans[0] = classifier.generate_score(loan_id)
+	if(stat):
+		classifier = StatisticalBasedClassifier()
+		ans[1] = classifier.predict(loan_id)
+	if(ml):
+		classifier = MLBasedClassifier()
+		ans[2] = classifier.predict(loan_id)
+	if(stat and ml):
+		ans[3] = (SavedState.objects.all().first().statandml == 'stat')
+	return ans
+
 def uploadCSV(request):
-	add = request.GET.get('add')
-	session = Sessions.objects.all().first()
+	params = get_params(request, ['add'])
 	form = FileUploadForm()
-	# notify.send(form, verb='was saved')
-	if(add):
+	if(params['add'] == 'ok'):
 		messages.info(request, 'Record created successfully')
-	else:
-		context = {'form':form, 'session': session.user}
+	context = {'form':form, 'session': params['session']}
 	return render(request, 'loan_officer/uploadCSV.html', context)
 
 @require_POST
@@ -65,9 +80,10 @@ def addApplicant(request):
 	form = FileUploadForm(request.POST, request.FILES)
 	url = reverse('loan_officer:uploadCSV')
 	if form.is_valid():
-		# form.process_data(request.POST, request.FILES['file'])
 		form.process_data(request.FILES['file'])
 		base_url = reverse('loan_officer:uploadCSV')
 		query_string =  urlencode({'add': 'ok'})
 		url = '{}?{}'.format(base_url, query_string)
 	return redirect(url)
+
+

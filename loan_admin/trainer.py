@@ -119,9 +119,6 @@ class Trainer(metaclass=ABCMeta):
 		self.acc = ac
 		return ac
 
-	def save_model(self, model_name):
-		"""This method saves the model in our required format."""
-
 class KNN(Trainer):
 	def __init__(self, Column_Names, Output_Feature, Nominal_Features, Dataset_Location):
 		super(KNN, self).__init__(Column_Names, Output_Feature, Nominal_Features, 
@@ -198,4 +195,4 @@ class RandomForest(Trainer):
 			# 'criterion' :['gini', 'entropy']
 			'criterion' :['gini']
 		}
-		self.Random_forest_model = GridSearchCV(estimator=rfc, param_grid=param_grid, cv= 10)
+		self.trained_model = GridSearchCV(estimator=rfc, param_grid=param_grid, cv= 10)

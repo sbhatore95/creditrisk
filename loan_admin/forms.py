@@ -10,7 +10,6 @@ from loan_officer.models import SavedState
 from loan_officer.project import *
 from .tasks import *
 import threading
-from .data_processor import *
 
 class FeatureForm(forms.ModelForm):
 	VALUE_CHOICES = [

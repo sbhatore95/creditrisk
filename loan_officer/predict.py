@@ -177,7 +177,7 @@ rs = RuleBasedStrategy()
 ss = StatisticalStrategy()
 ms = MLStrategy()
 
-class ClassificationStrategy(object):
+class Classifier(object):
 	def __init__(self, rule_strategy, data_strategy):
 		self._rule_strategy = rule_strategy
 		self._data_strategy = data_strategy
@@ -188,35 +188,14 @@ class ClassificationStrategy(object):
 	def predict(self, loan_id):
 		return self._data_strategy.predict(loan_id)
 
-class RuleBasedClassifier(ClassificationStrategy):
+class RuleBasedClassifier(Classifier):
 	def __init__(self):
 		super(RuleBasedClassifier, self).__init__(rs, None)
 
-class StatisticalBasedClassifier(ClassificationStrategy):
+class StatisticalBasedClassifier(Classifier):
 	def __init__(self):
 		super(StatisticalBasedClassifier, self).__init__(None, ss)
 
-class MLBasedClassifier(ClassificationStrategy):
+class MLBasedClassifier(Classifier):
 	def __init__(self):
 		super(MLBasedClassifier, self).__init__(None, ms)
-
-class Classifier:
-	def __init__(self, rule, stat, ml):
-		self.rule = rule
-		self.stat = stat
-		self.ml = ml
-
-	def doClassification(self, loan_id):
-		ans = [None, None, None, None]
-		if(self.rule):			
-			classifier = RuleBasedClassifier()
-			ans[0] = classifier.generate_score(loan_id)
-		if(self.stat):
-			classifier = StatisticalBasedClassifier()
-			ans[1] = classifier.predict(loan_id)
-		if(self.ml):
-			classifier = MLBasedClassifier()
-			ans[2] = classifier.predict(loan_id)
-		if(self.stat and self.ml):
-			ans[3] = (SavedState.objects.all().first().statandml == 'stat')
-		return ans

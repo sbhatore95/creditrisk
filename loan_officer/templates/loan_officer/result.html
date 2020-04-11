@@ -50,22 +50,22 @@
 								{% if not_ready %}
 									<tr><td>Model(s) is/are not ready.</td></tr>
 								{% endif %}
-								{% if rule %}
-									<tr><td>Rule Based</td><td><b>Score: </b></td><td>{{ rule }}</td></tr>
+								{% if result.0 %}
+									<tr><td>Rule Based</td><td><b>Score: </b></td><td>{{ result.0 }}</td></tr>
 								{% endif %}
-								{% if stat_approve %}				
-								<tr><td rowspan="2">Statistical Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ stat_approve }}</td></tr>
-								<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ stat_napprove }}</td></tr>
+								{% if result.1 %}				
+								<tr><td rowspan="2">Statistical Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ result.1 }}</td></tr>
+								<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ result.2 }}</td></tr>
 								{% endif %}
-								{% if ml_approve %}
-								<tr><td rowspan="2">ML Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ ml_approve }}</td></tr>
-								<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ ml_napprove }}</td></tr>
+								{% if result.3 %}
+								<tr><td rowspan="2">ML Based</td><td><b>Approve</b>&nbsp &nbsp</td><td>{{ result.3 }}</td></tr>
+								<tr><td><b>Not Approve</b>&nbsp &nbsp</td><td>{{ result.4 }}</td></tr>
 								{% endif %}
 							</tbody>
 						</table>
 					</div>
 					<br>
-					{% if statandml %}
+					{% if result.5 %}
 						Statistical model wins in performance measure.
 					{% else %}
 						ML model wins in performance measure.
