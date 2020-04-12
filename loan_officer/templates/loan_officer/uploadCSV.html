@@ -6,10 +6,16 @@
 		<head>
 			<meta charset="utf-8">
 		    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+			<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+			<!-- Material Design Bootstrap -->
+			<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.15.0/css/mdb.min.css" rel="stylesheet">
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<!-- Bootstrap tooltips -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+			<!-- Bootstrap core JavaScript -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+			<!-- MDB core JavaScript -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.15.0/js/mdb.min.js"></script>
 			<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
 		</head>
 		<body>
@@ -42,22 +48,27 @@
 					</ul>
 				</nav>
 				<div class="page-content" id="content">
-					<h1> Customer Dataset Upload </h1>
-					{% if messages %}
-					<div class="alert alert-success" role="alert">
-					    {% for message in messages %}
-					    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-					    {% endfor %}
+					<div class="card">
+						<h5 class="card-header info-color white-text text-center py-4">
+							Customer Dataset Upload
+						</h5>
+						{% if messages %}
+						<div class="alert alert-success" role="alert">
+						    {% for message in messages %}
+						    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+						    {% endfor %}
+						</div>
+						{% endif %}
+						<form style="color: #757575;" action="{% url 'loan_officer:add' %}" method="POST" enctype= multipart/form-data>
+							{% csrf_token %}
+							<br>
+							<div class="custom-file">
+								{{ form.file }}
+								<label class="custom-file-label" for="customFile">Choose file</label>
+							</div><br><br>
+						    <input type="submit" value="Submit" class="btn btn-primary">
+						</form>
 					</div>
-					{% endif %}
-					<form action="{% url 'loan_officer:add' %}" method="POST" enctype= multipart/form-data>
-						{% csrf_token %}
-						<div class="custom-file">
-							{{ form.file }}
-							<label class="custom-file-label" for="customFile">Choose file</label>
-						</div><br><br>
-					    <input type="submit" value="Submit" class="btn btn-primary">
-					</form>
 				</div>
 			</div>
 			<script>		

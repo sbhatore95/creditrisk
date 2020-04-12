@@ -6,10 +6,16 @@
 		<head>
 			<meta charset="utf-8">
 		    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+			<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+			<!-- Material Design Bootstrap -->
+			<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.15.0/css/mdb.min.css" rel="stylesheet">
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+			<!-- Bootstrap tooltips -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+			<!-- Bootstrap core JavaScript -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+			<!-- MDB core JavaScript -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.15.0/js/mdb.min.js"></script>
 			<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
 		</head>
 		<body>
@@ -42,32 +48,36 @@
 					</ul>
 				</nav>
 				<div class="page-content" id="content">
-					<h1> Scorecard </h1>
-					<div>
-						<ul>
-							<li>Rule - ready</li>
-							<li>Stat and ML - {% if status_bg %}ready{% else %}not ready{% endif %} </li>
-						</ul>
+					<div class="card">
+						<h5 class="card-header info-color white-text text-center py-4">
+							Scorecard
+						</h5>
+						<div class="card-body px-lg-5 pt-0">
+							<ul>
+								<li>Rule - ready</li>
+								<li>Stat and ML - {% if status_bg %}ready{% else %}not ready{% endif %} </li>
+							</ul>
+							<form style="color: #757575;" action="{% url 'loan_officer:result' %}" method="GET" role="form">
+							    <div class="md-form">
+							    	<label>Loan ID</label>
+							    	{{ form.loan_id }}
+							    </div>
+							    <br>
+							    <div class="custom-control custom-checkbox mb-3">
+							    	{{ form.rule_based }}
+							    	<label class="custom-control-label" for="customCheck1">Rule Based</label>
+							    </div><div class="custom-control custom-checkbox mb-3">
+							    	{{ form.statistical_based }}
+							    	<label class="custom-control-label" for="customCheck2">Statistical Based</label>
+							    </div>
+							    <div class="custom-control custom-checkbox mb-3">
+							    	{{ form.ML_based }}
+							    	<label class="custom-control-label" for="customCheck3">ML Based</label>
+							    </div>
+							    <input type="submit" value="Submit" class="btn btn-primary">
+							</form>
+						</div>
 					</div>
-					<form action="{% url 'loan_officer:result' %}" method="GET" role="form">
-					    <div>
-					    	<label>Loan ID</label>
-					    	{{ form.loan_id }}
-					    </div>
-					    <br>
-					    <div class="custom-control custom-checkbox mb-3">
-					    	{{ form.rule_based }}
-					    	<label class="custom-control-label" for="customCheck1">Rule Based</label>
-					    </div><div class="custom-control custom-checkbox mb-3">
-					    	{{ form.statistical_based }}
-					    	<label class="custom-control-label" for="customCheck2">Statistical Based</label>
-					    </div>
-					    <div class="custom-control custom-checkbox mb-3">
-					    	{{ form.ML_based }}
-					    	<label class="custom-control-label" for="customCheck3">ML Based</label>
-					    </div>
-					    <input type="submit" value="Submit" class="btn btn-primary">
-					</form>
 				</div>
 			</div>
 			<script>

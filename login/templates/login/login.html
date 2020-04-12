@@ -6,7 +6,40 @@
 		<meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<!-- Bootstrap tooltips -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+		<!-- Bootstrap core JavaScript -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+		<!-- MDB core JavaScript -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.15.0/js/mdb.min.js"></script>
 		<link rel="stylesheet" href="/media/credit_risk/static/css/navbar.css">
+		<style>
+			.card-header:first-child {
+			    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+			}
+			.info-color {
+    			background-color: #33b5e5 !important;
+			}
+			.white-text {
+			    color: #fff !important;
+			}
+			.text-center {
+			    text-align: center!important;
+			}
+			.pb-4, .py-4 {
+			    padding-bottom: 1.5rem!important;
+			}
+			.pt-4, .py-4 {
+			    padding-top: 1.5rem!important;
+			}
+			.card-header {
+			    padding: .75rem 1.25rem;
+			    margin-bottom: 0;
+			    background-color: rgba(0,0,0,.03);
+			    border-bottom: 1px solid rgba(0,0,0,.125);
+			}
+		</style>
 	</head>
 	<body>
 		<div class="container">
@@ -28,23 +61,32 @@
 				</ul>
 			</nav>
 			<div class="page-content" id="content">
-				<h1> Login </h1>
-				{% if messages %}
-				<div class="alert alert-danger" role="alert">
-				    {% for message in messages %}
-				    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-				    {% endfor %}
+				<div class="card">
+					<h5 class="card-header info-color white-text text-center py-4">
+						Login
+					</h5>
+					{% if messages %}
+					<div class="alert alert-danger" role="alert">
+					    {% for message in messages %}
+					    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					    {% endfor %}
+					</div>
+					{% endif %}
+					<div class="card-body px-lg-5 pt-0">
+						<br>
+						<form class="" style="color: #757575;" action="{% url 'login:authenticate_and_redirect' %}" method="POST" role="form">
+							{% csrf_token %}
+							{{ form.name }}
+							<br>
+							<div class="md-form">
+								{{ form.password.label }}
+								{{ form.password }}
+							</div>
+							<br>
+							<input type="submit" value="Submit" class="btn btn-primary" id="submit">
+						</form>
+					</div>
 				</div>
-				{% endif %}
-				<form action="{% url 'login:authenticate_and_redirect' %}" method="POST" role="form">
-					{% csrf_token %}
-					{{ form.name }}
-					<br>
-					{{ form.password.label }}
-					{{ form.password }}
-					<br>
-					<input type="submit" value="Submit" class="btn btn-primary" id="submit">
-				</form>
 			</div>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

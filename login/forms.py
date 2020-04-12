@@ -6,7 +6,7 @@ class UserForm(forms.Form):
 			help_text="Select the User",
 			required=True,
 			label="Select User ",
-			widget=RadioSelectButtonGroup,
+			widget=RadioSelectButtonGroup(attrs={'class': 'form-control'}),
 			choices=((1, 'Admin'), (2, 'Officer')),
 			initial=1,
 			)
