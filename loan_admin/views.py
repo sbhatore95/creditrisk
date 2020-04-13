@@ -24,8 +24,14 @@ def index(request):
 	params = get_params(request, 'add')
 	if(params['add'] == 'ok1'):
 		messages.info(request, 'Record created successfully')
+		alert = 'ok'
+	elif(params['add'] == 'invalid1'):
+		messages.info(request, 'Record already exists')
+		alert = 'invalid1'
+	else:
+		alert = 'none'
 	form = FeatureForm()
-	context = {'form':form, 'session':params['session']}
+	context = {'form':form, 'session':params['session'], 'alert':alert}
 	return render(request, 'loan_admin/index.html', context)
 
 def configuration(request):
@@ -55,6 +61,10 @@ def addFeature(request):
 		feature = form.save()
 		base_url = reverse('loan_admin:index')
 		query_string =  urlencode({'add': 'ok1'})
+		url = '{}?{}'.format(base_url, query_string)
+	else:
+		base_url = reverse('loan_admin:index')
+		query_string =  urlencode({'add': 'invalid1'})
 		url = '{}?{}'.format(base_url, query_string)
 	return redirect(url)
 

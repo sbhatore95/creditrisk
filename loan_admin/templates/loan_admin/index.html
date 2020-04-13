@@ -81,11 +81,20 @@
 					        <strong>Add Feature</strong>
 					    </h5>
 					    {% if messages %}
+					    {% if alert == 'ok' %}
 						<div class="alert alert-success" role="alert">
 						    {% for message in messages %}
-						    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+						    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
 						    {% endfor %}
 						</div>
+						{% endif %}
+						{% if alert == 'invalid1' %}
+						<div class="alert alert-danger" role="alert">
+						    {% for message in messages %}
+						    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+						    {% endfor %}
+						</div>
+						{% endif %}
 						{% endif %}
 					    <!--Card content-->
 					    <div class="card-body px-lg-5 pt-0">

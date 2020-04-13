@@ -39,9 +39,27 @@ class FeatureForm(forms.ModelForm):
 		widget=forms.Select(attrs={'class': 'mdb-select'}))
 	status = forms.BooleanField(label="Status", required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input', 'id': "customCheck1"}))
+
 	class Meta:
 		model = Feature
 		fields = ['name', 'value', 'data_type', 'category', 'status']
+
+	def is_valid(self):
+		if(super(FeatureForm, self).is_valid()):
+			ins_name = self.cleaned_data['name']
+			ins_value = self.cleaned_data['value']
+			ins_data_type = self.cleaned_data['data_type']
+			ins_category = self.cleaned_data['category']
+			ins_status = self.cleaned_data['status']
+			if(ins_name == None):
+				return False
+			print(ins_name)
+			name_set = Feature.objects.filter(name=ins_name)
+			print(name_set)
+			if(len(name_set) is 0):
+				return True
+			else:
+				return False
 
 class ConfigurationForm(forms.ModelForm):
 	CATEGORY_CHOICES = [
