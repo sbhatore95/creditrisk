@@ -5,7 +5,6 @@
 
 
 import pandas as pd
-import numpy as np
 from matplotlib import pyplot as plt
 from sklearn import preprocessing
 from sklearn.preprocessing import OneHotEncoder
@@ -200,7 +199,6 @@ class predict_score:
         # print("Best Hyper Parameters:",self.KNN_model.best_params_)
         Y_pred = self.KNN_model.predict(self.X_test)
         wt_ac, ac = self.weighted_accuracy(self.Y_test, Y_pred)
-        # np.set_printoptions(precision=2)
 
         # # Plot non-normalized confusion matrix
         # titles_options = [("Normalized confusion matrix", 'true')]
@@ -239,7 +237,6 @@ class predict_score:
         print("3")
         wt_ac, ac = self.weighted_accuracy(self.Y_test, Y_pred)
         print("Weighted accuracy : "+str(wt_ac)+", Normal accuracy : "+str(ac))
-        # np.set_printoptions(precision=2)
 
         # # Plot non-normalized confusion matrix
         # titles_options = [("Normalized confusion matrix", 'true')]
@@ -269,7 +266,6 @@ class predict_score:
         Y_pred = self.Logistic_model.predict(self.X_test)
         wt_ac, ac = self.weighted_accuracy(self.Y_test, Y_pred)
         best_params = " " + "Weighted accuracy : "+str(wt_ac)+", Normal accuracy : "+str(ac)
-        np.set_printoptions(precision=2)
 
         # Plot non-normalized confusion matrix
         # titles_options = [("Confusion matrix, without normalization", None),
@@ -477,7 +473,7 @@ class predict_score:
 #     print(column_arr[i])
 #     x = predict_score(column_arr[i], 'approve', nominal_arr[i], "dataset/a.data")
 #     x.Preprocess()
-#     m = np.array(instance_arr[i])
+#
 #     x.Prepare_Data(m)
 # x = predict_score(columns, 'loan_status', nominal, "dataset.csv")
 # x.Preprocess()
