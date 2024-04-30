@@ -9,6 +9,7 @@ django-bootstrap4==1.1.1
 django-crispy-forms==1.9.0
 django-dynamic-model==0.1.0
 django-extensions==2.2.9
+gcc==11.2
 imbalanced-learn==0.6.2
 imblearn==0.0
 joblib==1.2.0
