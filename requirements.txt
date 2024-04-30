@@ -9,13 +9,11 @@ django-bootstrap4==1.1.1
 django-crispy-forms==1.9.0
 django-dynamic-model==0.1.0
 django-extensions==2.2.9
-gfortran==5
 imbalanced-learn==0.6.2
 imblearn==0.0
 joblib==1.2.0
 kiwisolver==1.1.0
 matplotlib==3.8.4
-numpy==1.21.3
 pandas==2.2.2
 psycopg2-binary==2.8.4
 psycopg2==2.7.5
