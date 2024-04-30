@@ -1,6 +1,6 @@
 gunicorn
 django-heroku
-asgiref==3.2.7
+#asgiref==3.2.7
 beautifulsoup4==4.8.2
 cycler==0.10.0
 dj-database-url==0.5.0
