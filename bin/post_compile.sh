@@ -1,1 +1,1 @@
-python3.8 manage.py migrate
+python3.12.3 manage.py migrate
