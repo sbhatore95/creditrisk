@@ -1,1 +1,1 @@
-python3.10 manage.py migrate
+python3.12 manage.py migrate
