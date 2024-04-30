@@ -2,7 +2,6 @@ android==1.0
 astroid==2.15.8
 audiostream==0.2
 cffi==1.16.0
-cmake @ file:///home/n0n3m4/Desktop/Pydroid/zBuildPrepared/cmake-3.26.4-py3-none-any.whl#sha256=695389dbf5c0aa220776821172e2f03865e0fe9ba10d7459373597d21af6643e
 dill==0.3.7
 distro==1.8.0
 isort==5.12.0
@@ -10,7 +9,6 @@ jedi==0.19.0
 Kivy==2.2.1
 lazy-object-proxy==0.0.0
 mccabe==0.7.0
-ninja @ file:///home/n0n3m4/Desktop/Pydroid/zBuildPrepared/ninja-1.11.1-py3-none-any.whl#sha256=bde2ef34b4295ff07a0c1703ce5c7f3acccd621a91b21d4c6aaf09bd8f6591a8
 packaging==23.1
 parso==0.8.3
 pkgconfig==1.5.5
