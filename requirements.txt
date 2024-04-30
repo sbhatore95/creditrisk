@@ -12,7 +12,6 @@ platformdirs==3.10.0
 pybind11==2.11.1
 pycparser==2.21
 pygame==2.5.0
-pyjnius==1.5.0
 pylint==2.17.5
 PySDL2==0.9.15
 scikit-build==0.17.6
