@@ -1,2 +1,2 @@
-release: python3.9 manage.py migrate
+release: python3.10 manage.py migrate
 web: gunicorn credit_risk.wsgi
