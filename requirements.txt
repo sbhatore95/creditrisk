@@ -44,6 +44,5 @@ pylint==2.17.5
 PySDL2==0.9.15
 scikit-build==0.17.6
 six==1.16.0
-tomlkit==0.12.1
 typed-ast==1.5.5
 wrapt==1.15.0
