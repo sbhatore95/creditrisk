@@ -1,4 +1,5 @@
 # Credit Risk Evaluation Application
+## CREISK
 
 This application helps a loan granting officer of a bank or financial organisation or any stakeholder in that manner, to evaluate the loan applications and helps deciding whether to grant the loan to a specific stakeholder or not. This helps in making decisions with regard to the applied loans.  
 **Background:** Risk for the applied loan can be evaluated using three methods - Rule based, Statistical based and Machine Learning based. Rule based models rely on well defined rules to judge a use case while Statistical and Machine Learning models rely on the data of other previously given loans. A decision can be suggested in this case by analysis of this data.  
