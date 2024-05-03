@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'loan_admin',
     'loan_officer',
     'login',
-    'django-bootstrap4',
+    'bootstrap4',
     'crispy_forms',
     # 'django_extensions',
     'django.contrib.admin',
