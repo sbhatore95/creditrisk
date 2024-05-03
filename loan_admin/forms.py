@@ -4,8 +4,8 @@ from .models import Configuration
 from .models import UploadFile, Criteria, CriteriaHelper, SetScale
 import csv
 import io
-# from django-bootstrap4.widgets import RadioSelectButtonGroup
-# from crispy_forms.helper import FormHelper
+from bootstrap4.widgets import RadioSelectButtonGroup
+from crispy_forms import FormHelper # type: ignore
 from loan_officer.models import SavedState
 from loan_officer.project import *
 from .tasks import *
