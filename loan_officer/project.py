@@ -3,25 +3,24 @@
 
 # In[129]:
 
-
-import pandas as pd
-from sklearn import preprocessing
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.model_selection import train_test_split
-from imblearn.over_sampling import SMOTE
-from sklearn.neural_network import MLPClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report,confusion_matrix
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+import pandas as pd # type: ignore
+from sklearn import preprocessing # type: ignore
+from sklearn.preprocessing import OneHotEncoder # type: ignore
+from sklearn.model_selection import train_test_split # type: ignore
+from imblearn.over_sampling import SMOTE # type: ignore
+from sklearn.neural_network import MLPClassifier # type: ignore
+from sklearn.linear_model import LogisticRegression # type: ignore
+from sklearn.metrics import classification_report,confusion_matrix # type: ignore
+from sklearn.neighbors import KNeighborsClassifier # type: ignore
+from sklearn.model_selection import GridSearchCV # type: ignore
+from sklearn.model_selection import train_test_split # type: ignore
+from sklearn.ensemble import RandomForestClassifier # type: ignore
 #import xgboost as xgb
-from sklearn import svm
-from sklearn.ensemble import IsolationForest
+from sklearn import svm # type: ignore
+from sklearn.ensemble import IsolationForest # type: ignore
 import warnings
-from sklearn.metrics import plot_confusion_matrix
-from sklearn.decomposition import PCA
+from sklearn.metrics import plot_confusion_matrix # type: ignore
+from sklearn.decomposition import PCA # type: ignore
 import pickle 
 import codecs
 from six.moves import cPickle
