@@ -2,6 +2,7 @@ import abc
 from loan_admin.models import Criteria, CriteriaHelper, Configuration, Feature
 from .project import *
 import pandas as pd # type: ignore
+import numpy as np
 #import xgboost as xgb
 from six.moves import cPickle # type: ignore
 import os
@@ -135,7 +136,7 @@ class StatisticalStrategy(DataBasedStrategyAbstract):
 
 	def get_result(self, loan_id):
 		self.load_model()
-		super(StatisticalStrategy, self).preprocess(pd.DataFrame(self.parse(loan_id)))
+		super(StatisticalStrategy, self).preprocess(np.array(self.parse(loan_id)))
 		result = self.model.trained_model.predict_proba(self.df)
 		return (str(result[0][0])+ ","+str(result[0][1]))
 
@@ -148,7 +149,7 @@ class MLStrategy(DataBasedStrategyAbstract):
 
 	def get_result(self, loan_id):
 		self.load_model()
-		super(MLStrategy, self).preprocess(pd.DataFrame(self.parse(loan_id)))
+		super(MLStrategy, self).preprocess(np.array(self.parse(loan_id)))
 		result = self.model.trained_model.predict_proba(self.df)
 		return (str(result[0][0])+ ","+str(result[0][1]))
 

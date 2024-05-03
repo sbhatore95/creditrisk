@@ -1,4 +1,5 @@
 import pandas as pd # type: ignore
+import numpy as np
 from sklearn import preprocessing # type: ignore
 from sklearn.preprocessing import OneHotEncoder # type: ignore
 from sklearn.model_selection import train_test_split # type: ignore
@@ -152,8 +153,24 @@ class SVM(Trainer):
 
 class NN_Network(Trainer):
 	def __init__(self, Column_Names, Output_Feature, Nominal_Features, Dataset_Location):
-		super(NN_Network, self).__init__(Column_Names, Output_Feature, Nominal_Features, 
-			Dataset_Location)
+		super(NN_Network, self).__init__(Column_Names, Output_Feature, Nominal_Features, Dataset_Location)
+	def set_model(self):
+		print("------- Neural Network ---------")
+		Input = len(self.dataset.columns)
+		Mlp = MLPClassifier()
+		parameter_space = {
+        #'hidden_layer_sizes': [(Input,100,2), (Input,100,25,2),(Input,100,50,25,2)],
+        # 'hidden_layer_sizes' : np.arange(5, 12),
+        'hidden_layer_sizes' : np.arange(6, 10),
+        # 'solver': ['sgd', 'adam', 'lbfgs'],
+        'solver': ['adam'],
+        # 'alpha':10.0 ** -np.arange(1,7),
+        'alpha':10.0 ** -np.arange(1,4),
+        # 'batch_size' : [100,200,300,400,500],
+        'batch_size' : [200],
+        # 'learning_rate': ['constant','adaptive'],}
+        'learning_rate': ['constant'],}
+		self.trained_model = GridSearchCV(Mlp, parameter_space, n_jobs = -1, cv = 10)
 
 class RandomForest(Trainer):
 	def __init__(self, Column_Names, Output_Feature, Nominal_Features, Dataset_Location):
