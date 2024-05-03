@@ -14,7 +14,7 @@ imbalanced-learn==0.6.2
 imblearn==0.0
 joblib==1.2.0
 kiwisolver==1.1.0
-numpy==1.14.5
+numpy==1.26.4
 pandas==1.0.3
 psycopg2-binary==2.8.4
 psycopg2==2.7.5
