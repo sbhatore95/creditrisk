@@ -1,5 +1,6 @@
 gunicorn
 django-heroku
+bootstrap4
 asgiref==3.4.1
 beautifulsoup4==4.8.2
 cycler==0.10.0
