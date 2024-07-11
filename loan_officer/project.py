@@ -1,34 +1,28 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[129]:
-
-
-import pandas as pd
+import pandas as pd # type: ignore
 import numpy as np
-from matplotlib import pyplot as plt
-from sklearn import preprocessing
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.model_selection import train_test_split
-from imblearn.over_sampling import SMOTE
-from sklearn.neural_network import MLPClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report,confusion_matrix
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+from sklearn import preprocessing # type: ignore
+from sklearn.preprocessing import OneHotEncoder # type: ignore
+from sklearn.model_selection import train_test_split # type: ignore
+from imblearn.over_sampling import SMOTE # type: ignore
+from sklearn.neural_network import MLPClassifier # type: ignore
+from sklearn.linear_model import LogisticRegression # type: ignore
+from sklearn.metrics import classification_report,confusion_matrix # type: ignore
+from sklearn.neighbors import KNeighborsClassifier # type: ignore
+from sklearn.model_selection import GridSearchCV # type: ignore
+from sklearn.model_selection import train_test_split # type: ignore
+from sklearn.ensemble import RandomForestClassifier # type: ignore
 #import xgboost as xgb
-from sklearn import svm
-from sklearn.ensemble import IsolationForest
+from sklearn import svm # type: ignore
+from sklearn.ensemble import IsolationForest # type: ignore
 import warnings
-from sklearn.metrics import plot_confusion_matrix
-from sklearn.decomposition import PCA
+from sklearn.metrics import plot_confusion_matrix # type: ignore
+from sklearn.decomposition import PCA # type: ignore
 import pickle 
 import codecs
-from six.moves import cPickle
-# In[130]:
-
+from six.moves import cPickle # type: ignore
 
 # columns = ['loan_status','funded_amnt','term','int_rate','installment','sub_grade','emp_length',
 # 'home_ownership','annual_inc','verification_status','pymnt_plan','purpose',
@@ -78,10 +72,7 @@ class predict_score:
         self.Nominal_Features = Nominal_Features
         self.Output_Feature = Output_Feature
         self.Num_Features = list(self.dataset.select_dtypes(include = [int, float]))
-#         print(self.Num_Features)
-        # print(self.Num_Features)
         self.Num_Features.remove(self.Output_Feature)
-        # self.Num_Features.remove("id")
         self.Cat_Features = list(self.dataset.select_dtypes(include = [object]))
         self.Le = preprocessing.LabelEncoder()
         self.Approve_dataset = self.dataset.loc[self.dataset[Output_Feature] == 0]
@@ -101,14 +92,7 @@ class predict_score:
         print(self.dataset.info())
     
     def Unique(self):
-        print(self.dataset.nunique())
-    
-    #def Outcome_Distribution(self):
-       # Distribution = dict(self.dataset[self.Output_Feature].value_counts())
-       # Labels = ["YES", "NO"]
-       # plt.bar( Labels, Distribution.values() );
-       # plt.title("Frequency distribution of outcomes")
-        
+        print(self.dataset.nunique())        
     
     def Label_Encoding(self):
         Cat_dataset = self.dataset.select_dtypes(include=[object])
@@ -116,20 +100,6 @@ class predict_score:
             # print(Cat_dataset[col])
             self.dataset[col] = self.Le.fit_transform(Cat_dataset[col])
             self.le_name_mapping[col]  = dict(zip(self.Le.classes_, self.Le.transform(self.Le.classes_)))
-       
-        
-    #def histograms(self):
-        #Total_Cat_Features = len(self.Cat_Features)
-        #plt.subplots(figsize = (20,20))
-        #for i in range(len(self.Cat_Features)):
-         #   Appr_data = self.Approve_dataset[self.Cat_Features[i]].value_counts().to_dict()
-          #  Not_Appr_data = self.Not_Approve_dataset[self.Cat_Features[i]].value_counts().to_dict()
-           # plt.subplot(Total_Cat_Features/3 + 1, 3, i+1)
-           # plt.bar(Appr_data.keys(),Appr_data.values())
-           # plt.bar(Not_Appr_data.keys(),Not_Appr_data.values())
-           # plt.xlabel(qualitative[i])
-           # plt.legend(["yes", "No"])
-        #plt.tight_layout()
         
     def One_Hot_Encoding(self):
         for col in self.Nominal_Features:
@@ -181,15 +151,6 @@ class predict_score:
         accuracy = (conf_mat[1][1] + conf_mat[0][0])/(sum(conf_mat[1]) + sum(conf_mat[0]))
         return weighted_accuracy, accuracy
 
-    
-    #def KNN_Plot(self):
-     #   plt.plot(self.k, self.KNN_Wt_Accuracy)
-      #  plt.plot(self.k, self.KNN_Accuracy)
-       # plt.xlabel("K-Values")
-        #plt.ylabel("Weighted_Accuracy")
-        #plt.legend(["Weighted accuracy", "Normal accuracy"])
-        #plt.show()
-    
     #Doesn't depend on parameteres
     def KNN(self):
 #         print("--------- KNN ---------")
@@ -200,23 +161,6 @@ class predict_score:
         # print("Best Hyper Parameters:",self.KNN_model.best_params_)
         Y_pred = self.KNN_model.predict(self.X_test)
         wt_ac, ac = self.weighted_accuracy(self.Y_test, Y_pred)
-        # np.set_printoptions(precision=2)
-
-        # # Plot non-normalized confusion matrix
-        # titles_options = [("Normalized confusion matrix", 'true')]
-        # print("4")
-        # for title, normalize in titles_options:
-        #     disp = plot_confusion_matrix(self.KNN_model, self.X_test, self.Y_test,
-        #                                  display_labels=['approve', 'not_approve'],
-        #                                  cmap=plt.cm.Blues,
-        #                                  normalize=normalize)
-        #     disp.ax_.set_title(title)
-
-        #     print(title)
-        #     print(disp.confusion_matrix)
-        # print("5")
-        # plt.show()
-        # print(self.Best_Acc + "---" + ac)
         if(self.Best_Acc < ac):
             self.Best_Acc = ac
             self.Best_Model = "KNN_model"
@@ -239,22 +183,7 @@ class predict_score:
         print("3")
         wt_ac, ac = self.weighted_accuracy(self.Y_test, Y_pred)
         print("Weighted accuracy : "+str(wt_ac)+", Normal accuracy : "+str(ac))
-        # np.set_printoptions(precision=2)
 
-        # # Plot non-normalized confusion matrix
-        # titles_options = [("Normalized confusion matrix", 'true')]
-        # print("4")
-        # for title, normalize in titles_options:
-        #     disp = plot_confusion_matrix(self.svm_model, self.X_test, self.Y_test,
-        #                                  display_labels=['approve', 'not_approve'],
-        #                                  cmap=plt.cm.Blues,
-        #                                  normalize=normalize)
-        #     disp.ax_.set_title(title)
-
-        #     print(title)
-        #     print(disp.confusion_matrix)
-        # print("5")
-        # plt.show()
         if(self.Best_Acc < ac):
             self.Best_Acc = ac
             self.Best_Model = "svm_model"
@@ -269,24 +198,6 @@ class predict_score:
         Y_pred = self.Logistic_model.predict(self.X_test)
         wt_ac, ac = self.weighted_accuracy(self.Y_test, Y_pred)
         best_params = " " + "Weighted accuracy : "+str(wt_ac)+", Normal accuracy : "+str(ac)
-        np.set_printoptions(precision=2)
-
-        # Plot non-normalized confusion matrix
-        # titles_options = [("Confusion matrix, without normalization", None),
-        # ("Normalized confusion matrix", 'true')]
-        # titles_options = [("Confusion matrix, without normalization", None)]
-        # print("4")
-        # for title, normalize in titles_options:
-        #     disp = plot_confusion_matrix(self.Logistic_model, self.X_test, self.Y_test,
-        #                                  display_labels=['approve', 'not_approve'],
-        #                                  cmap=plt.cm.Blues,
-        #                                  normalize=normalize)
-        #     disp.ax_.set_title(title)
-
-        #     print(title)
-        #     print(disp.confusion_matrix)
-        # print("5")
-        # plt.show()
         if(self.Best_Acc < ac):
             self.Best_Acc = ac
             self.Best_Model = "Logistic_model"
@@ -343,32 +254,6 @@ class predict_score:
         if(self.Best_Acc < ac):
             self.Best_Acc = ac
             self.Best_Model = "Random_forest"
-    
-    #def Xgb_model(self):
-    #    print("------- XGB Model ---------")
-    #    model =  xgb.XGBClassifier()
-    #    parameters = {'nthread':[4], 
-    #         'objective':['binary:logistic'],
-    #         'learning_rate': [0.05],
-    #         'max_depth': [6],
-    #         'min_child_weight': [11],
-    #         'silent': [1],
-    #         'subsample': [0.8],
-    #         'colsample_bytree': [0.7],
-    #         'n_estimators': [1000], 
-    #         'missing':[-999],
-    #         'seed': [1337]
-    #        }
-        
-    #    self.xgb_model = GridSearchCV(model, parameters, n_jobs=5,cv = 10, scoring = 'roc_auc', refit = 'True') 
-    #    self.xgb_model.fit(self.X_train, self.Y_train)
-    #    print('Best parameters found:\n', self.xgb_model.best_params_)
-    #    Y_pred = self.xgb_model.predict(self.X_test)
-    #    wt_ac, ac = self.weighted_accuracy(self.Y_test, Y_pred)
-    #    print("Weighted accuracy : "+str(wt_ac)+", Normal accuracy : "+str(ac))
-    #    if(self.Best_Acc < ac):
-    #        self.Best_Acc = ac
-    #        self.Best_Model = "xgb_model"
         
     def Prepare_Data(self, User_Input):
         self.df = pd.DataFrame(User_Input.reshape(-1, len(User_Input)), columns = self.Test_columns)
@@ -395,49 +280,17 @@ class predict_score:
             result = self.KNN_model.predict_proba(self.df)
         
         elif(self.Best_Model == "svm_model"):
-#             feat_imp = pd.Series(abs(self.svm_model.best_estimator_.coef_[0]), index = self.X.columns)
-#             feat_imp.nlargest(10).plot(kind='barh')
-#             plt.xlabel("Coefficients")
-#             plt.ylabel("Features")
-#             plt.title("Feature Importance Graph")
-#             plt.show()
             result = self.svm_model.predict_proba(self.df)
         
         elif(self.Best_Model == "Logistic_model"):
-            #feat_imp = pd.Series(abs(self.Logistic_model.best_estimator_.coef_[0]), index = self.X.columns)
-#             print(feat_imp)
-            #feat_imp.nlargest(10).plot(kind='barh')
-            #plt.xlabel("Coefficients")
-            #plt.ylabel("Features")
-            #plt.title("Feature Importance Graph")
-#             plt.show()
             result = self.Logistic_model.predict_proba(self.df)
         
         elif(self.Best_Model == "NN_model"):
             result = self.NN_model.predict_proba(self.df)
         
         elif(self.Best_Model == "Random_forest"):
-            #feat_imp =pd.Series( self.Random_forest_model.best_estimator_.feature_importances_, index = self.X.columns)
-            print(feat_imp)
-            #feat_imp.nlargest(10).plot(kind='barh')
-            #plt.xlabel("Coefficients")
-            #plt.ylabel("Features")
-            #plt.title("Feature Importance Graph")
-            #plt.show()
             result = self.Random_forest_model.predict_proba(self.df)
-        
-        #elif(self.Best_Model == "xgb_model"):
-            #feat_imp = pd.Series(self.xgb_model.best_estimator_.feature_importances_, index = self.X.columns)
-            #feat_imp.nlargest(10).plot(kind='barh')
-            #plt.xlabel("Coefficients")
-            #plt.ylabel("Features")
-            #plt.title("Feature Importance Graph")
-            #plt.show()
-        #    result = self.xgb_model.predict_proba(self.df)
-            
-        return (str(result[0][0])+ ","+str(result[0][1]))
-#         plt.bar("Approve", result[0][0])
-#         plt.bar("Not Approve", result[0][1])
+            return (str(result[0][0])+ ","+str(result[0][1]))
         
     def Preprocess(self, model):
             self.Label_Encoding()
@@ -445,12 +298,6 @@ class predict_score:
             self.Outlier()
             self.Split_Data(0.2)
             self.Standardize()
-            # pca = PCA(.80)
-            # pca.fit(self.X_train)
-            # print(pca.n_components_)
-            # self.X_train = pca.transform(self.X_train)
-            # self.X_test = pca.transform(self.X_test)
-            # print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
             if(model == "statistical"):
                 print(self.Logistic())
             elif(model == "ml"):
@@ -458,32 +305,7 @@ class predict_score:
             else:
                 print(self.Logistic())
                 print(self.KNN())
-            # self.SVM()
-            # self.Neural_Network()
-            # self.Random_forest()
 
-# In[132]:
-
-
-#arr = ["A11", 6, "A34", "A43", 1169, "A65", "A75", 4, "A93", "A101", 4, "A121", 67, "A143", "A152", 2 ,"A173", 1, "A192", "A201"]
-#instance_arr = []
-#curr_arr = []
-#for i in arr:
-#    curr_arr.append(i)
-#    instance_arr.append(list(curr_arr))
-# for i in range(1, len(instance_arr)):
-#     if(i == 6):
-#         continue
-#     print(column_arr[i])
-#     x = predict_score(column_arr[i], 'approve', nominal_arr[i], "dataset/a.data")
-#     x.Preprocess()
-#     m = np.array(instance_arr[i])
-#     x.Prepare_Data(m)
-# x = predict_score(columns, 'loan_status', nominal, "dataset.csv")
-# x.Preprocess()
-
-
-# In[ ]:
 def learn_and_save(model, columns, nominal, dataset):
     x = predict_score(columns, 'loan_status', nominal, dataset)
     if(model == "statistical"):
@@ -519,23 +341,4 @@ def load_and_predict(model, arr):
         f.close()
     m = np.array(arr)
     return reloaded.Prepare_Data(m)
-    # print("-?" + reloaded.Best_Model)
-    # return "1,2"
-
-
-
-# In[ ]:
-
-
-# feat_imp = pd.Series(abs(x.Logistic_model.best_estimator_.coef_[0]), index = x.X.columns)
-
-
-# In[ ]:
-
-
-# print(feat_imp)
-
-
-# In[ ]:
-
 

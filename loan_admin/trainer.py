@@ -1,25 +1,23 @@
-import pandas as pd
+import pandas as pd # type: ignore
 import numpy as np
-from matplotlib import pyplot as plt
-from sklearn import preprocessing
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.model_selection import train_test_split
-from imblearn.over_sampling import SMOTE
-from sklearn.neural_network import MLPClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report,confusion_matrix
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn import svm
-from sklearn.ensemble import IsolationForest
+from sklearn import preprocessing # type: ignore
+from sklearn.preprocessing import OneHotEncoder # type: ignore
+from sklearn.model_selection import train_test_split # type: ignore
+from imblearn.over_sampling import SMOTE # type: ignore
+from sklearn.neural_network import MLPClassifier # type: ignore
+from sklearn.linear_model import LogisticRegression # type: ignore
+from sklearn.metrics import classification_report,confusion_matrix # type: ignore
+from sklearn.neighbors import KNeighborsClassifier # type: ignore
+from sklearn.model_selection import GridSearchCV # type: ignore
+from sklearn.model_selection import train_test_split # type: ignore
+from sklearn.ensemble import RandomForestClassifier # type: ignore
+from sklearn import svm # type: ignore
+from sklearn.ensemble import IsolationForest # type: ignore
 import warnings
-from sklearn.metrics import plot_confusion_matrix
-from sklearn.decomposition import PCA
+from sklearn.metrics import plot_confusion_matrix # type: ignore
+from sklearn.decomposition import PCA # type: ignore
 import pickle 
 import codecs
-from six.moves import cPickle
 from abc import ABCMeta, abstractmethod
 
 class Trainer(metaclass=ABCMeta):
@@ -155,26 +153,23 @@ class SVM(Trainer):
 
 class NN_Network(Trainer):
 	def __init__(self, Column_Names, Output_Feature, Nominal_Features, Dataset_Location):
-		super(NN_Network, self).__init__(Column_Names, Output_Feature, Nominal_Features, 
-			Dataset_Location)
-
+		super(NN_Network, self).__init__(Column_Names, Output_Feature, Nominal_Features, Dataset_Location)
 	def set_model(self):
 		print("------- Neural Network ---------")
-		warnings.filterwarnings("ignore")
 		Input = len(self.dataset.columns)
 		Mlp = MLPClassifier()
 		parameter_space = {
-		#'hidden_layer_sizes': [(Input,100,2), (Input,100,25,2),(Input,100,50,25,2)],
-		# 'hidden_layer_sizes' : np.arange(5, 12),
-		'hidden_layer_sizes' : np.arange(6, 10),
-		# 'solver': ['sgd', 'adam', 'lbfgs'],
-		'solver': ['adam'],
-		# 'alpha':10.0 ** -np.arange(1,7),
-		'alpha':10.0 ** -np.arange(1,4),
-		# 'batch_size' : [100,200,300,400,500],
-		'batch_size' : [200],
-		# 'learning_rate': ['constant','adaptive'],}
-		'learning_rate': ['constant'],}
+        #'hidden_layer_sizes': [(Input,100,2), (Input,100,25,2),(Input,100,50,25,2)],
+        # 'hidden_layer_sizes' : np.arange(5, 12),
+        'hidden_layer_sizes' : np.arange(6, 10),
+        # 'solver': ['sgd', 'adam', 'lbfgs'],
+        'solver': ['adam'],
+        # 'alpha':10.0 ** -np.arange(1,7),
+        'alpha':10.0 ** -np.arange(1,4),
+        # 'batch_size' : [100,200,300,400,500],
+        'batch_size' : [200],
+        # 'learning_rate': ['constant','adaptive'],}
+        'learning_rate': ['constant'],}
 		self.trained_model = GridSearchCV(Mlp, parameter_space, n_jobs = -1, cv = 10)
 
 class RandomForest(Trainer):

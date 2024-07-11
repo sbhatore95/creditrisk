@@ -1,30 +1,10 @@
 import abc
-from .models import SavedState
-from loan_admin.models import UploadFile, Criteria, CriteriaHelper, Configuration, Feature
+from loan_admin.models import Criteria, CriteriaHelper, Configuration, Feature
 from .project import *
-import pandas as pd
+import pandas as pd # type: ignore
 import numpy as np
-from matplotlib import pyplot as plt
-from sklearn import preprocessing
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.model_selection import train_test_split
-from imblearn.over_sampling import SMOTE
-from sklearn.neural_network import MLPClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report,confusion_matrix
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
 #import xgboost as xgb
-from sklearn import svm
-from sklearn.ensemble import IsolationForest
-import warnings
-from sklearn.metrics import plot_confusion_matrix
-from sklearn.decomposition import PCA
-import pickle 
-import codecs
-from six.moves import cPickle
+from six.moves import cPickle # type: ignore
 import os
 from django.conf import settings
 

@@ -5,7 +5,6 @@ from .models import UploadFile, Criteria, CriteriaHelper, SetScale
 import csv
 import io
 from bootstrap4.widgets import RadioSelectButtonGroup
-from crispy_forms.helper import FormHelper
 from loan_officer.models import SavedState
 from loan_officer.project import *
 from .tasks import *
